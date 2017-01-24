@@ -1,1 +1,1 @@
-# angualr-2-electron-quick-start
+# Angular 2 + Electron quick-start

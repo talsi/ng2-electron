@@ -1,0 +1,16 @@
+:host{
+  display: block;
+  margin-bottom: 4px;
+}
+
+code{
+  white-space: pre;
+  display: inline-block;
+}
+
+md-progress-spinner{
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+}
