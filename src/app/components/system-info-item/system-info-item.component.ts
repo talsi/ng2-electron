@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NodeApiService } from "../../../../node";
+import { NodeApiService } from "../../../../../node";
 
 @Component({
   selector: 'system-info-item',
-  templateUrl: './system-info-item.component.html',
-  styleUrls: ['./system-info-item.component.css']
+  templateUrl: 'system-info-item.component.html',
+  styleUrls: ['system-info-item.component.css']
 })
 export class SystemInfoItemComponent implements OnInit {
 

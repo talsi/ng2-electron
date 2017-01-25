@@ -6,6 +6,8 @@
   "main": "main.js",
   "scripts": {
     "ng": "ng",
+    "build": "ng build --watch=false",
+    "build-watch": "ng build --watch=true",
     "serve": "ng serve",
     "serve hmr": "ng serve --hmr -e=hmr",
     "electron": "electron .",

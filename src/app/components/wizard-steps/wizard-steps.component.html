@@ -1,0 +1,1 @@
+<a *ngFor="let step of wizardService.getSteps()" [ngClass]="{'active': step.isActive}">{{step.name}}</a>

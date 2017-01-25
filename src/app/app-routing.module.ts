@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SystemInfoPanelComponent } from "./steps";
-import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
+import { SystemInfoPanelComponent } from "./wizard";
+import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
 
 const routes: Routes = [
   {

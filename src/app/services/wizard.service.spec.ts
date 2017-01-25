@@ -1,16 +1,16 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, inject } from '@angular/core/testing';
-import { NodeApiService } from './node-api.service';
+import { WizardService } from './wizard.service';
 
-describe('NodeApiService', () => {
+describe('WizardService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NodeApiService]
+      providers: [WizardService]
     });
   });
 
-  it('should ...', inject([NodeApiService], (service: NodeApiService) => {
+  it('should ...', inject([WizardService], (service: WizardService) => {
     expect(service).toBeTruthy();
   }));
 });
