@@ -1,6 +1,6 @@
 :host{
   display: block;
-  margin-bottom: 4px;
+  height: 36px;
 }
 
 code{
@@ -13,4 +13,8 @@ md-progress-spinner{
   height: 16px;
   width: 16px;
   vertical-align: middle;
+}
+
+button{
+  float: right;
 }

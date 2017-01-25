@@ -1,26 +1,30 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import 'hammerjs';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { HttpModule } from "@angular/http";
+import { AppRoutingModule } from "./app-routing.module";
 
-import { AppComponent } from './app.component';
+import { AppComponent } from "./app.component";
 import { MaterialModule } from "@angular/material";
-import { SystemInfoPanelComponent } from './system-info/system-info-panel.component';
+import { PageNotFoundComponent } from "./page-not-found";
+import { SystemInfoPanelComponent, SystemInfoItemComponent } from "./steps";
 import { NodeApiService } from "../node";
-import { SystemInfoItemComponent } from "./system-info-item/system-info-item.component";
+
+import "hammerjs";
 
 @NgModule({
   declarations: [
     AppComponent,
     SystemInfoPanelComponent,
-    SystemInfoItemComponent
+    SystemInfoItemComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    MaterialModule.forRoot()
+    MaterialModule.forRoot(),
+    AppRoutingModule
   ],
   providers: [NodeApiService],
   bootstrap: [AppComponent]

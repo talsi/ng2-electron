@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NodeApiService } from "../../node/node-api.service";
+import { NodeApiService } from "../../../../node";
 
 @Component({
   selector: 'system-info-item',
