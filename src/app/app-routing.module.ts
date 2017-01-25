@@ -1,11 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SystemInfoPanelComponent } from "./wizard";
-import { PageNotFoundComponent } from "./components/page-not-found/page-not-found.component";
+import { SystemInfoPanelComponent, PageNotFoundComponent } from "./components";
 
 const routes: Routes = [
   {
     path: 'system-requirements',
+    component: SystemInfoPanelComponent
+  },
+  {
+    path: 'dummy1',
+    component: SystemInfoPanelComponent
+  },
+  {
+    path: 'dummy2',
     component: SystemInfoPanelComponent
   },
   {
@@ -20,7 +27,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
   providers: []
 })

@@ -1,1 +1,9 @@
-<a *ngFor="let step of wizardService.getSteps()" [ngClass]="{'active': step.isActive}">{{step.name}}</a>
+<span *ngFor="let route of router.config | steps; let i = index;">
+  <md-icon *ngIf="i > 0">keyboard_arrow_right</md-icon>
+  <button md-button
+          disabled
+          [routerLink]="'/' + route.path"
+          routerLinkActive="active">{{route.path}}</button>
+</span>
+
+<button id="continue-button" md-raised-button color="accent">CONTINUE</button>

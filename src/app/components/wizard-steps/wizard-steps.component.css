@@ -1,16 +1,46 @@
-a:before {
-  content: '\E5CC';
-  color: rgba(255,255,255,0.7);
-  vertical-align: top;
-  display: inline-block;
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 25px;
-  margin: 0 10px 0 8px;
-  -webkit-font-smoothing: antialiased;
+:host{
+  display: block;
+  background-color: rgba(0, 0, 0, 0.25);
+  margin-bottom: 20px;
+  height: 57px;
+  line-height: 57px;
 }
 
-a:first-child:before {
-  display: none;
+:host:before, :host:after{
+  content: '';
+  position: absolute;
+  top: auto;
+  height: 57px;
+  background-color: inherit;
+  width: 8px;
+}
+
+:host:before{
+  left: 0px;
+}
+
+:host:after{
+  right: 0px;
+}
+
+md-icon{
+  position: relative;
+  top: 8px;
+}
+
+button[disabled][disabled]{
+  color: #b4b4b4;
+}
+
+button.active[disabled][disabled]{
+  color: #ffd740;
+  text-decoration: underline;
+}
+
+#continue-button{
+  float: right;
+  position: relative;
+  right: 1px;
+  top: 50%;
+  transform: translateY(-50%);
 }

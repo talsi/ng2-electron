@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { WizardService } from "../../services/wizard.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-wizard-steps',
+  selector: 'wizard-steps',
   templateUrl: 'wizard-steps.component.html',
   styleUrls: ['wizard-steps.component.css']
 })
 export class WizardStepsComponent implements OnInit {
 
-  constructor(public wizardService: WizardService) { }
+  constructor(public router: Router) { }
 
   ngOnInit() {
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IWizardStep } from "../interfaces/wizard-step.interface";
+import { IWizardStep } from "../interfaces";
 
 @Injectable()
 export class WizardService {

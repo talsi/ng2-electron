@@ -8,11 +8,13 @@ import { MaterialModule } from "@angular/material";
 
 import { AppComponent } from "./app.component";
 import { NodeApiService, WizardService } from "./services";
+import { StepsPipe } from './pipes/steps.pipe';
 import {
   WizardStepsComponent,
   SystemInfoPanelComponent,
   SystemInfoItemComponent,
-  PageNotFoundComponent
+  PageNotFoundComponent,
+  CmdOutputDialogComponent
 } from "./components";
 
 @NgModule({
@@ -21,7 +23,9 @@ import {
     SystemInfoPanelComponent,
     SystemInfoItemComponent,
     PageNotFoundComponent,
-    WizardStepsComponent
+    WizardStepsComponent,
+    StepsPipe,
+    CmdOutputDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +37,9 @@ import {
   providers: [
     WizardService,
     NodeApiService
+  ],
+  entryComponents: [
+    CmdOutputDialogComponent
   ],
   bootstrap: [AppComponent]
 })

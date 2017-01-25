@@ -1,3 +1,7 @@
-<code>{{name}}: {{info}}</code>
+<span color="warn" *ngIf="error">{{error}}</span>
+<code>{{name}}</code><br>
+<code>required: {{requirements}}</code><br>
+<code>installed: {{cmdOutput}}</code>
 <md-progress-spinner *ngIf="!cmdCompleted" mode="indeterminate"></md-progress-spinner>
-<button md-raised-button>UPDATE</button>
+<button *ngIf="cmdCompleted && !valid" md-raised-button color="warn" (click)="update()">UPDATE</button>
+<md-icon *ngIf="cmdCompleted && valid" color="accent">check_circle</md-icon>

@@ -1,6 +1,6 @@
 :host{
   display: block;
-  height: 36px;
+  position: relative;
 }
 
 code{
@@ -10,11 +10,27 @@ code{
 
 md-progress-spinner{
   display: inline-block;
-  height: 16px;
-  width: 16px;
+  height: 24px;
+  width: 24px;
   vertical-align: middle;
+  float: right;
+  top: 14px;
+  position: absolute;
+  right: 40px;
+  z-index: 1;
+}
+
+button, md-icon{
+  position: absolute;
+  top: 8px;
+}
+
+md-icon{
+  line-height: 36px;
+  cursor: default;
+  right: 40px;
 }
 
 button{
-  float: right;
+  right: 10px;
 }

@@ -1,8 +1,13 @@
-<system-info-item [name]="'node'" [cmd]="'node -v'" ></system-info-item>
+<system-info-item [name]="'node'" [cmd]="'node -v'"
+                  [requirements]="'6.9'"></system-info-item>
 <hr>
-<system-info-item [name]="'gulp'" [cmd]="'gulp -v'"></system-info-item>
+<system-info-item [name]="'gulp'" [cmd]="'gulp -v'"
+                  [requirements]="'3.9'"
+                  [updateCmd]="'npm uninstall -g gulp && npm install -g gulp^3.9'"></system-info-item>
 <hr>
-<system-info-item [name]="'typescript'" [cmd]="'tsc -v'"></system-info-item>
+<system-info-item [name]="'typescript'" [cmd]="'tsc -v'"
+                  [requirements]="'2.1.1'"></system-info-item>
 <hr>
-<system-info-item [name]="'angular cli'" [cmd]="'ng -v'" [bufferOutput]="true"></system-info-item>
+<system-info-item [name]="'angular cli'" [cmd]="'ng -v'" [concatOutput]="true"
+                  [requirements]="'angular-cli: 1.0.0-beta.26'"></system-info-item>
 
