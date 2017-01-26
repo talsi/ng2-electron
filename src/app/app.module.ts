@@ -7,14 +7,13 @@ import { AppRoutingModule } from "./app-routing.module";
 import { MaterialModule } from "@angular/material";
 
 import { AppComponent } from "./app.component";
-import { NodeApiService, WizardService } from "./services";
+import { NodeApiService, SystemRequirementsService } from "./services";
 import { StepsPipe } from './pipes/steps.pipe';
 import {
   WizardStepsComponent,
   SystemInfoPanelComponent,
   SystemInfoItemComponent,
-  PageNotFoundComponent,
-  CmdOutputDialogComponent
+  PageNotFoundComponent
 } from "./components";
 
 @NgModule({
@@ -24,8 +23,7 @@ import {
     SystemInfoItemComponent,
     PageNotFoundComponent,
     WizardStepsComponent,
-    StepsPipe,
-    CmdOutputDialogComponent
+    StepsPipe
   ],
   imports: [
     BrowserModule,
@@ -35,11 +33,8 @@ import {
     AppRoutingModule
   ],
   providers: [
-    WizardService,
-    NodeApiService
-  ],
-  entryComponents: [
-    CmdOutputDialogComponent
+    NodeApiService,
+    SystemRequirementsService
   ],
   bootstrap: [AppComponent]
 })

@@ -28,7 +28,15 @@ button, md-icon{
 md-icon{
   line-height: 36px;
   cursor: default;
+}
+
+md-icon.checked{
   right: 40px;
+}
+
+md-icon.refresh{
+  right: 110px;
+  cursor: pointer;
 }
 
 button{

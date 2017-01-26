@@ -1,2 +1,2 @@
 export * from './node.service';
-export * from './wizard.service';
+export * from './system-requirements.service';

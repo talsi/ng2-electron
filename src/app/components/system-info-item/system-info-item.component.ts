@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NodeApiService } from "../../services";
-import { MdDialogRef, MdDialog, MdDialogConfig } from "@angular/material";
-import { CmdOutputDialogComponent } from "../cmd-output-dialog/cmd-output-dialog.component";
+import { ICmdOutput } from "../../interfaces";
 
 @Component({
   selector: 'system-info-item',
@@ -20,49 +19,62 @@ export class SystemInfoItemComponent implements OnInit {
   error: string = '';
   valid: boolean = false;
   cmdCompleted: boolean = false;
+  status: string = '';
 
-  dialogRef: MdDialogRef<CmdOutputDialogComponent>;
-
-  constructor(private node: NodeApiService,
-              private dialog: MdDialog) { }
+  constructor(private node: NodeApiService) { }
 
   ngOnInit() {
-    this.runCmd();
+    this.verifyVersion();
   }
 
-  private runCmd() {
+  private verifyVersion() {
+    this.status = 'Verifying version...';
     this.node.cmd(this.cmd).subscribe(
-      data => this.concatOutput ? this.cmdOutput += data : this.cmdOutput = data,
+      output => this.onCmdOutput(output),
       err => this.error = err,
       () => this.omCmdComplete()
     )
   }
 
+  private onCmdOutput(output: ICmdOutput) {
+    switch (output.type){
+      case 'info':
+        this.concatOutput ? this.cmdOutput += output.data : this.cmdOutput = output.data;
+        break;
+      case 'error':
+        if(output.data.indexOf('is not recognized') > -1) this.cmdOutput = `${this.name} is not installed`;
+        break;
+    }
+  }
+
   private omCmdComplete() {
     this.cmdCompleted = true;
+    this.status = 'installed:';
     this.valid = this.cmdOutput.indexOf(this.requirements) > -1;
   }
 
   update() {
+    if(this.updateCmd.startsWith('http')){
+      return this.node.openExternalBrowser(this.updateCmd);
+    }
+    this.reset();
+    this.status = 'Updating...';
+    this.node.cmd(this.updateCmd).subscribe(
+      data => null,
+      err => this.error = err,
+      () => this.verifyVersion()
+    );
+  }
 
-    this.dialogRef = this.dialog.open(CmdOutputDialogComponent,  <MdDialogConfig> {
-      disableClose: true,
-      width: '256px'
-    });
+  private reset() {
+    this.cmdOutput = '';
+    this.error = '';
+    this.valid = false;
+    this.cmdCompleted = false;
+  }
 
-    this.dialogRef.afterClosed().subscribe(result => {
-      console.log('result: ' + result);
-      this.dialogRef = null;
-    });
-
-    // this.dialogRef.afterClosed().subscribe(result => {
-    //   console.log('result: ' + result);
-    //   this.dialogRef = null;
-    // });
-    // this.node.cmd(this.updateCmd).subscribe(
-    //   data => this.concatOutput ? this.cmdOutput += data : this.cmdOutput = data,
-    //   err => this.error = err,
-    //   () => this.omCmdComplete()
-    // )
+  refresh() {
+    this.reset();
+    this.verifyVersion();
   }
 }

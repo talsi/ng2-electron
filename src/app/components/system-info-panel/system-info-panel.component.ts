@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SystemRequirementsService } from "../../services";
 
 @Component({
   selector: 'system-info-panel',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SystemInfoPanelComponent implements OnInit {
 
-  constructor() { }
+  constructor(public systemRequirementsService: SystemRequirementsService) { }
 
   ngOnInit() {
   }

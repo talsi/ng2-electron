@@ -1,34 +1,48 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Observable, Observer } from "rxjs";
+import { ICmdOutput } from "../interfaces";
 
+const electron = window['require']('electron');
 const spawn = window['require']("child_process").spawn;
+const userHomeDir = window['process'].env[(window['process'].platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 
 @Injectable()
 export class NodeApiService {
 
   constructor(private ngZone: NgZone) { }
 
-  cmd(cmd: string) : Observable<string> {
+  cmd(cmd: string) : Observable<ICmdOutput> {
 
     console.log(`cmd invoked: "${cmd}"`);
+    console.log(`cwd: ${userHomeDir}`);
 
-    let shell = spawn(cmd, [], {shell: true});
+    let shell = spawn(cmd, [], {
+      cwd: userHomeDir,
+      shell: true
+    });
+
     shell.stdout.setEncoding('utf8');
     shell.stderr.setEncoding('utf8');
 
-    return new Observable<string>((o: Observer<string>) => {
+    return new Observable<ICmdOutput>((o: Observer<ICmdOutput>) => {
 
       shell.stdout.on('data', (data) => {
         this.ngZone.run(() => {
           console.log(`stdout [${cmd}]: ${data}`);
-          o.next(data.replace(/\[\d\dm/g, ""));
+          o.next({
+            type: 'info',
+            data: data.replace(/\[\d\dm/g, "")
+          });
         });
       });
 
       shell.stderr.on('data', (data) => {
         this.ngZone.run(() => {
           console.log(`stderr [${cmd}]: ${data}`);
-          // o.next(data);
+          o.next({
+            type: 'error',
+            data: data
+          });
         });
       });
 
@@ -50,5 +64,9 @@ export class NodeApiService {
       });
 
     }).share();
+  }
+
+  openExternalBrowser(url: string) {
+    electron.shell.openExternal(url);
   }
 }
