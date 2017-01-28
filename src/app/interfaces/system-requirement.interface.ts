@@ -1,7 +1,7 @@
 export interface ISystemRequirement {
   name: string,
   cmd: string,
-  requirements: string,
+  version: string,
   updateCmd: string,
   concatOutput?: boolean
 }

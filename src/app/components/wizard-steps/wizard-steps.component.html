@@ -8,4 +8,6 @@
   <md-icon *ngIf="!last">keyboard_arrow_right</md-icon>
 </span>
 
-<button id="continue-button" md-raised-button color="accent">CONTINUE</button>
+<button md-raised-button
+        color="accent"
+        [disabled]="!(wizardService | async)">CONTINUE</button>

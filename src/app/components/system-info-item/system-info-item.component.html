@@ -3,6 +3,6 @@
 <code>required: {{requirements}}</code><br>
 <code>{{status}} {{cmdOutput}}</code>
 <md-progress-spinner *ngIf="!cmdCompleted" mode="indeterminate"></md-progress-spinner>
-<md-icon class="refresh" *ngIf="cmdCompleted && !valid" (click)="refresh()">refresh</md-icon>
-<button *ngIf="cmdCompleted && !valid" md-raised-button color="warn" (click)="update()">UPDATE</button>
-<md-icon class="checked" *ngIf="cmdCompleted && valid" color="accent">check_circle</md-icon>
+<md-icon class="refresh" *ngIf="cmdCompleted && !isValid" (click)="refresh()">refresh</md-icon>
+<button *ngIf="cmdCompleted && !isValid" md-raised-button color="warn" (click)="update()">UPDATE</button>
+<md-icon class="checked" *ngIf="cmdCompleted && isValid" color="accent">check_circle</md-icon>

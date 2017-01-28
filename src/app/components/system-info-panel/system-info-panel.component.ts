@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { SystemRequirementsService } from "../../services";
+import { SystemRequirementsService, WizardService } from "../../services";
+import { ISystemRequirement,IRequirementValidationEvent } from "../../interfaces";
+
+const validationMap: { [key: string]: boolean; } = {};
 
 @Component({
   selector: 'system-info-panel',
@@ -8,9 +11,28 @@ import { SystemRequirementsService } from "../../services";
 })
 export class SystemInfoPanelComponent implements OnInit {
 
-  constructor(public systemRequirementsService: SystemRequirementsService) { }
+  requirements: ISystemRequirement[];
+
+  constructor(public systemRequirementsService: SystemRequirementsService,
+              private wizardService: WizardService) {
+    this.requirements = this.systemRequirementsService.getSystemRequirements();
+    this.requirements.forEach(requirement => validationMap[requirement.name] = false);
+  }
 
   ngOnInit() {
+  }
+
+  onValidation(validationEvent: IRequirementValidationEvent){
+    validationMap[validationEvent.name] = validationEvent.isValid;
+    let allRequirementsValid = true;
+    for(let name in validationMap){
+      if (!validationMap[name]){
+        allRequirementsValid = false;
+      }
+    }
+    if(allRequirementsValid){
+      this.wizardService.emit(true);
+    }
   }
 
 }

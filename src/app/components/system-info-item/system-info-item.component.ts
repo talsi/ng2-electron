@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NodeApiService } from "../../services";
-import { ICmdOutput } from "../../interfaces";
+import { ICmdOutput, IRequirementValidationEvent } from "../../interfaces";
 
 @Component({
   selector: 'system-info-item',
@@ -15,9 +15,11 @@ export class SystemInfoItemComponent implements OnInit {
   @Input() requirements: string;
   @Input() updateCmd: string;
 
+  @Output() validation: EventEmitter<IRequirementValidationEvent> = new EventEmitter<IRequirementValidationEvent>();
+
   cmdOutput: string = '';
   error: string = '';
-  valid: boolean = false;
+  isValid: boolean = false;
   cmdCompleted: boolean = false;
   status: string = '';
 
@@ -50,7 +52,11 @@ export class SystemInfoItemComponent implements OnInit {
   private omCmdComplete() {
     this.cmdCompleted = true;
     this.status = 'installed:';
-    this.valid = this.cmdOutput.indexOf(this.requirements) > -1;
+    this.isValid = this.cmdOutput.indexOf(this.requirements) > -1;
+    this.validation.emit({
+      name: this.name,
+      isValid: this.isValid
+    })
   }
 
   update() {
@@ -69,7 +75,7 @@ export class SystemInfoItemComponent implements OnInit {
   private reset() {
     this.cmdOutput = '';
     this.error = '';
-    this.valid = false;
+    this.isValid = false;
     this.cmdCompleted = false;
   }
 
