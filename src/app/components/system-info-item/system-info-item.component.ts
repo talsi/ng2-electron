@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NodeApiService } from "../../services";
-import { ICmdOutput, IRequirementValidationEvent } from "../../interfaces";
+import { ICmdOutput, IRequirementValidationEvent, ISystemRequirement } from "../../interfaces";
 
 @Component({
   selector: 'system-info-item',
@@ -9,11 +9,7 @@ import { ICmdOutput, IRequirementValidationEvent } from "../../interfaces";
 })
 export class SystemInfoItemComponent implements OnInit {
 
-  @Input() name: string;
-  @Input() cmd: string;
-  @Input() concatOutput: boolean;
-  @Input() requirements: string;
-  @Input() updateCmd: string;
+  @Input() requirement: ISystemRequirement;
 
   @Output() validation: EventEmitter<IRequirementValidationEvent> = new EventEmitter<IRequirementValidationEvent>();
 
@@ -31,7 +27,7 @@ export class SystemInfoItemComponent implements OnInit {
 
   private verifyVersion() {
     this.status = 'Verifying version...';
-    this.node.cmd(this.cmd).subscribe(
+    this.node.cmd(this.requirement.cmd).subscribe(
       output => this.onCmdOutput(output),
       err => this.error = err,
       () => this.omCmdComplete()
@@ -39,33 +35,40 @@ export class SystemInfoItemComponent implements OnInit {
   }
 
   private onCmdOutput(output: ICmdOutput) {
-    switch (output.type){
-      case 'info':
-        this.concatOutput ? this.cmdOutput += output.data : this.cmdOutput = output.data;
-        break;
-      case 'error':
-        if(output.data.indexOf('is not recognized') > -1) this.cmdOutput = `${this.name} is not installed`;
-        break;
+
+    // TODO: https://www.npmjs.com/package/semver-compare
+
+    const name = this.requirement.name;
+
+    if(output.data.indexOf('empty') > -1)
+      return this.cmdOutput = `${name} is not installed`;
+
+    if(this.requirement.format === 'json'){
+      let data = JSON.parse(output.data);
+      let version = data && data.dependencies && data.dependencies[name] && data.dependencies[name].version;
+      return this.cmdOutput = version || `${name} is not installed`;
     }
+
+    return this.cmdOutput = output.data;
   }
 
   private omCmdComplete() {
     this.cmdCompleted = true;
     this.status = 'installed:';
-    this.isValid = this.cmdOutput.indexOf(this.requirements) > -1;
+    this.isValid = this.cmdOutput.indexOf(this.requirement.version) > -1;
     this.validation.emit({
-      name: this.name,
+      name: this.requirement.name,
       isValid: this.isValid
     })
   }
 
   update() {
-    if(this.updateCmd.startsWith('http')){
-      return this.node.openExternalBrowser(this.updateCmd);
+    if(this.requirement.updateCmd.startsWith('http')){
+      return this.node.openExternalBrowser(this.requirement.updateCmd);
     }
     this.reset();
     this.status = 'Updating...';
-    this.node.cmd(this.updateCmd).subscribe(
+    this.node.cmd(this.requirement.updateCmd).subscribe(
       data => null,
       err => this.error = err,
       () => this.verifyVersion()

@@ -10,4 +10,4 @@
 
 <button md-raised-button
         color="accent"
-        [disabled]="!(wizardService | async)">CONTINUE</button>
+        [disabled]="!(wizardService.stepVaild | async)">CONTINUE</button>

@@ -1,12 +1,5 @@
 <section *ngFor="let requirement of requirements; let last = last;">
-  <system-info-item
-    [name]="requirement.name"
-    [cmd]="requirement.cmd"
-    [requirements]="requirement.requirements"
-    [updateCmd]="requirement.updateCmd"
-    [concatOutput]="requirement.concatOutput"
-    (validation)="onValidation($event)">
-  </system-info-item>
+  <system-info-item [requirement]="requirement" (validation)="onValidation($event)"></system-info-item>
   <hr *ngIf="!last"/>
 </section>
 
