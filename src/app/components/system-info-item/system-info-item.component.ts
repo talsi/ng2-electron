@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NodeApiService } from "../../services";
 import { ICmdOutput, IRequirementValidationEvent, ISystemRequirement } from "../../interfaces";
+import * as semver from "semver";
 
 @Component({
   selector: 'system-info-item',
@@ -36,20 +37,23 @@ export class SystemInfoItemComponent implements OnInit {
 
   private onCmdOutput(output: ICmdOutput) {
 
-    // TODO: https://www.npmjs.com/package/semver-compare
-
-    const name = this.requirement.name;
-
     if(output.data.indexOf('empty') > -1)
-      return this.cmdOutput = `${name} is not installed`;
+      return this.cmdOutput = `${this.requirement.name} is not installed`;
 
-    if(this.requirement.format === 'json'){
-      let data = JSON.parse(output.data);
-      let version = data && data.dependencies && data.dependencies[name] && data.dependencies[name].version;
-      return this.cmdOutput = version || `${name} is not installed`;
+     if(this.requirement.format === 'json')
+       return this.cmdOutput = this.extractVersionFromJsonString(output.data);
+
+      return this.cmdOutput = semver.clean(output.data);
+  }
+
+  private extractVersionFromJsonString(jsonString: string) {
+    let res = '';
+    try{
+      res = semver.clean(JSON.parse(jsonString).dependencies[this.requirement.name].version);
+    }catch (e){
+      res = `${this.requirement.name} is not installed`;
     }
-
-    return this.cmdOutput = output.data;
+    return res;
   }
 
   private omCmdComplete() {
