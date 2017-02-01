@@ -1,6 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SystemInfoPanelComponent, PageNotFoundComponent } from "./components";
+
+import {
+  SystemInfoPanelComponent,
+  PageNotFoundComponent,
+  AppConfigComponent
+} from "./components";
 
 const routes: Routes = [
   {
@@ -8,8 +13,8 @@ const routes: Routes = [
     component: SystemInfoPanelComponent
   },
   {
-    path: 'dummy1',
-    component: SystemInfoPanelComponent
+    path: 'app-config',
+    component: AppConfigComponent
   },
   {
     path: 'dummy2',

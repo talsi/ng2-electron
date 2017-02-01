@@ -5,20 +5,21 @@ import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { AppRoutingModule } from "./app-routing.module";
 import { MaterialModule } from "@angular/material";
+import { AceEditorComponent } from 'ng2-ace-editor';
 
 import { AppComponent } from "./app.component";
 
 import {
-  WizardService,
   NodeApiService,
-  SystemRequirementsService
+  WizardService
 } from "./services";
 
 import {
   WizardStepsComponent,
   SystemInfoPanelComponent,
   SystemInfoItemComponent,
-  PageNotFoundComponent
+  PageNotFoundComponent,
+  AppConfigComponent
 } from "./components";
 
 import { StepsPipe } from './pipes/steps.pipe';
@@ -26,10 +27,12 @@ import { StepsPipe } from './pipes/steps.pipe';
 @NgModule({
   declarations: [
     AppComponent,
+    AppConfigComponent,
     SystemInfoPanelComponent,
     SystemInfoItemComponent,
     PageNotFoundComponent,
     WizardStepsComponent,
+    AceEditorComponent,
     StepsPipe
   ],
   imports: [
@@ -40,9 +43,8 @@ import { StepsPipe } from './pipes/steps.pipe';
     AppRoutingModule
   ],
   providers: [
-    WizardService,
     NodeApiService,
-    SystemRequirementsService
+    WizardService
   ],
   bootstrap: [AppComponent]
 })

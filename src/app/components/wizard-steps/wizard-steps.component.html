@@ -1,14 +1,17 @@
 <span *ngFor="let route of router.config | steps; let last = last;">
   <button
-    md-button disabled
-    [routerLink]="'/' + route.path"
-    routerLinkActive="active">
+    disabled
+    md-button
+    routerLinkActive="active"
+    [routerLink]="'/' + route.path">
     {{route.path}}
   </button>
   <md-icon *ngIf="!last">keyboard_arrow_right</md-icon>
 </span>
 
-<button md-raised-button
-        color="accent"
-        id="continue-button"
-        [disabled]="!(wizardService.stepVaild | async)">CONTINUE</button>
+<button
+  color="accent"
+  id="continue-button"
+  md-raised-button
+  (click)="goToNextStep()"
+  [disabled]="!(wizardService.stepValid | async)">CONTINUE</button>

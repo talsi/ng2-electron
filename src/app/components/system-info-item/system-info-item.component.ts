@@ -27,7 +27,7 @@ export class SystemInfoItemComponent implements OnInit {
   }
 
   private getVersion() {
-    this.status = 'Verifying version...';
+    this.status = 'verifying version...';
     this.node.cmd(this.requirement.cmd).subscribe(
       output => this.extractVersionFromCmdOutput(output.data),
       err => this.error = err,

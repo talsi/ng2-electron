@@ -42,3 +42,8 @@ button.active[disabled][disabled]{
   right: 10px;
   transform: translateY(10px);
 }
+
+#continue-button[disabled]{
+  color: rgba(0,0,0,.87);
+  background-color: rgba(255, 215, 64, 0.1);
+}
