@@ -1,8 +1,7 @@
 <span color="warn" *ngIf="error">{{error}}</span>
 <code>{{requirement.name}}</code><br>
-<code>required: {{requirement.version}}</code><br>
-<code>{{status}} {{cmdOutput}}</code>
+<code>required: {{requirement.range}} {{requirement.version}}</code><br>
+<code>{{status}} {{version}}</code>
 <md-progress-spinner *ngIf="!cmdCompleted" mode="indeterminate"></md-progress-spinner>
-<!--<md-icon class="refresh" *ngIf="cmdCompleted && !isValid" (click)="refresh()">refresh</md-icon>-->
 <button *ngIf="cmdCompleted && !isValid" md-raised-button color="warn" (click)="update()">UPDATE</button>
 <md-icon class="checked" *ngIf="cmdCompleted && isValid" color="accent">check_circle</md-icon>

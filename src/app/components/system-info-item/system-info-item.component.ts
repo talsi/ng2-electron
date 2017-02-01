@@ -14,7 +14,7 @@ export class SystemInfoItemComponent implements OnInit {
 
   @Output() validation: EventEmitter<IRequirementValidationEvent> = new EventEmitter<IRequirementValidationEvent>();
 
-  cmdOutput: string = '';
+  version: string = '';
   error: string = '';
   isValid: boolean = false;
   cmdCompleted: boolean = false;
@@ -23,71 +23,78 @@ export class SystemInfoItemComponent implements OnInit {
   constructor(private node: NodeApiService) { }
 
   ngOnInit() {
-    this.verifyVersion();
+    this.getVersion();
   }
 
-  private verifyVersion() {
+  private getVersion() {
     this.status = 'Verifying version...';
     this.node.cmd(this.requirement.cmd).subscribe(
-      output => this.onCmdOutput(output),
+      output => this.extractVersionFromCmdOutput(output.data),
       err => this.error = err,
       () => this.omCmdComplete()
     )
   }
 
-  private onCmdOutput(output: ICmdOutput) {
-
-    if(output.data.indexOf('empty') > -1)
-      return this.cmdOutput = `${this.requirement.name} is not installed`;
-
-     if(this.requirement.format === 'json')
-       return this.cmdOutput = this.extractVersionFromJsonString(output.data);
-
-      return this.cmdOutput = semver.clean(output.data);
+  private extractVersionFromCmdOutput(cmdOutput: string) {
+    if(this.requirement.format === 'json')
+      this.version = this.extractVersionFromJsonString(cmdOutput);
+    else
+      this.version = semver.clean(cmdOutput);
+    this.version = this.version || `${this.requirement.name} is not installed`;
   }
 
   private extractVersionFromJsonString(jsonString: string) {
-    let res = '';
-    try{
-      res = semver.clean(JSON.parse(jsonString).dependencies[this.requirement.name].version);
-    }catch (e){
-      res = `${this.requirement.name} is not installed`;
-    }
-    return res;
+    try { return semver.clean(JSON.parse(jsonString).dependencies[this.requirement.name].version); } catch (e) {}
   }
 
   private omCmdComplete() {
     this.cmdCompleted = true;
     this.status = 'installed:';
-    this.isValid = this.cmdOutput.indexOf(this.requirement.version) > -1;
+    this.verifyVersion();
+  }
+
+  private verifyVersion() {
+    this.isValid = this.isSemverInRange();
     this.validation.emit({
       name: this.requirement.name,
       isValid: this.isValid
     })
   }
 
-  update() {
-    if(this.requirement.updateCmd.startsWith('http')){
-      return this.node.openExternalBrowser(this.requirement.updateCmd);
+  private isSemverInRange() {
+    switch (this.requirement.range){
+      case "less than":
+        return semver.lt(this.version, this.requirement.version);
+      case "less than or equal to":
+        return semver.lte(this.version, this.requirement.version);
+      case "equal to":
+        return semver.eq(this.version, this.requirement.version);
+      case "greater than":
+        return semver.gt(this.version, this.requirement.version);
+      case "greater than or equal to":
+        return semver.gte(this.version, this.requirement.version);
+      default:
+        throw 'Unknown range';
     }
+  }
+
+  update() {
+    if(this.requirement.updateCmd.startsWith('http'))
+      return this.node.openExternalBrowser(this.requirement.updateCmd);
+
     this.reset();
     this.status = 'Updating...';
     this.node.cmd(this.requirement.updateCmd).subscribe(
       data => null,
       err => this.error = err,
-      () => this.verifyVersion()
+      () => this.getVersion()
     );
   }
 
   private reset() {
-    this.cmdOutput = '';
+    this.version = '';
     this.error = '';
     this.isValid = false;
     this.cmdCompleted = false;
-  }
-
-  refresh() {
-    this.reset();
-    this.verifyVersion();
   }
 }
