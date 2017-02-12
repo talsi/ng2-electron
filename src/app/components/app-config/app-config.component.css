@@ -1,0 +1,15 @@
+ace-editor, json-schema-form{
+  width: 575px;
+}
+
+ace-editor{
+  height:150px;
+}
+
+:host >>> .md-input-placeholder{
+  color: inherit;
+}
+
+:host >>> .md-input-underline {
+  border-color: currentColor;
+}

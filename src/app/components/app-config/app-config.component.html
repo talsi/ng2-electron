@@ -2,4 +2,22 @@
   app-config works!
 </p>
 
-<ace-editor [(text)]="text" #editor style="height:150px;"></ace-editor>
+<ace-editor
+  #editor [text]="text"
+  (textChanged)="validate($event)">
+</ace-editor>
+
+<!--<json-schema-form
+  [schema]="schema"
+  [framework]="'material-design'"
+  (onSubmit)="onSubmit($event)">
+</json-schema-form>-->
+
+<json-schema-form
+  [form]="schema"
+  [framework]="'material-design'"
+  (onChanges)="onChanges($event)"
+  (onSubmit)="onSubmit($event)">
+</json-schema-form>
+
+<p>{{error}}</p>

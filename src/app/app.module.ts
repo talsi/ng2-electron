@@ -6,6 +6,7 @@ import { HttpModule } from "@angular/http";
 import { AppRoutingModule } from "./app-routing.module";
 import { MaterialModule } from "@angular/material";
 import { AceEditorComponent } from 'ng2-ace-editor';
+import { JsonSchemaFormModule } from 'angular2-json-schema-form/src';
 
 import { AppComponent } from "./app.component";
 
@@ -40,6 +41,7 @@ import { StepsPipe } from './pipes/steps.pipe';
     FormsModule,
     HttpModule,
     MaterialModule.forRoot(),
+    JsonSchemaFormModule.forRoot(),
     AppRoutingModule
   ],
   providers: [

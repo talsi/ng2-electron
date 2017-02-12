@@ -12,3 +12,7 @@ export class AppComponent implements OnInit {
   ngOnInit(){
   }
 }
+
+// TODO: load app from remote
+// TODO: load schemas from remote
+// TODO: make validator dynamic using eval
