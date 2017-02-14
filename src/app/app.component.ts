@@ -15,4 +15,5 @@ export class AppComponent implements OnInit {
 
 // TODO: load app from remote
 // TODO: load schemas from remote
+// TODO: remote logger
 // TODO: make validator dynamic using eval

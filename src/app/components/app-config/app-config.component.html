@@ -3,20 +3,16 @@
 </p>
 
 <ace-editor
-  #editor [text]="text"
-  (textChanged)="validate($event)">
+  #editor
+  (textChanged)="onJsonEditorTextChanged($event)">
 </ace-editor>
 
-<!--<json-schema-form
-  [schema]="schema"
-  [framework]="'material-design'"
-  (onSubmit)="onSubmit($event)">
-</json-schema-form>-->
-
 <json-schema-form
+  #form
   [form]="schema"
+  [data]="data"
   [framework]="'material-design'"
-  (onChanges)="onChanges($event)"
+  (onChanges)="onFormInputChanges($event)"
   (onSubmit)="onSubmit($event)">
 </json-schema-form>
 

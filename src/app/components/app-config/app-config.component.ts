@@ -3,13 +3,17 @@ import { AceEditorComponent } from 'ng2-ace-editor';
 import { JsonSchema } from '../../interfaces';
 import * as ajv from 'ajv';
 import { WizardService } from "../../services/wizard.service";
+import { JsonSchemaFormComponent } from "angular2-json-schema-form";
 
 const appConfigJsonSchema : JsonSchema = {
-  required: ['someProperty'],
+  required: ['name', 'age'],
   properties: {
-    someProperty: {
+    name: {
       type: 'string',
       minLength: 1
+    },
+    age: {
+      type: 'number'
     }
   }
 };
@@ -53,6 +57,9 @@ const jsonValidator = ajv().compile(appConfigJsonSchema);
 export class AppConfigComponent implements OnInit {
 
   @ViewChild('editor') editor: AceEditorComponent;
+  @ViewChild('form') form: JsonSchemaFormComponent;
+
+  data = {};
 
   schema: JsonSchema = mySchema;
   text: string = '';
@@ -64,35 +71,49 @@ export class AppConfigComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    //this.editor.setTheme("eclipse");
-    this.editor.getEditor().setOptions({
-      enableBasicAutocompletion: true,
-      blockScrolling: Infinity
-    });
-    debugger;
+    this.editor.getEditor().$blockScrolling = Infinity;
   }
 
-  onChanges(data){
-    console.log(`onChanges: ${JSON.stringify(data, null, 4)}`);
-    this.text = JSON.stringify(data, null, 4);
+  onFormInputChanges(data){
+    let text = JSON.stringify(data, null, 4);
+    if(this.text !== text){
+      this.text = text;
+      //this.data = data;
+      console.log(`onChanges: ${text}`);
+      this.editor.getEditor().setValue(text);
+      this.editor.getEditor().clearSelection();
+    }
   }
 
   onSubmit(data){
     console.log(`onSubmit: ${JSON.stringify(data, null, 4)}`);
   }
 
-  validate(text){
+  onJsonEditorTextChanged(text){
+    let isValid = this.validate(text);
+    if(isValid){
+      if(this.text !== text){
+        this.text = text;
+        this.data = JSON.parse(text);
+      }
+    }
+  }
+
+  private validate(text){
     try{
       if(jsonValidator(JSON.parse(text))){
         this.error = '';
         this.wizardService.emitStepValidity(true);
+        return true;
       }else{
         this.error = 'invalid schema';
         this.wizardService.emitStepValidity(false);
+        return false;
       }
     }catch (e){
       this.error = `invalid json. error: ${e}`;
       this.wizardService.emitStepValidity(false);
+      return false;
     }
   }
 }
