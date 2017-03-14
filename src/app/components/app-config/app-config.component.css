@@ -6,10 +6,13 @@ ace-editor{
   height:150px;
 }
 
-:host >>> .md-input-placeholder{
+:host >>> .md-input-placeholder,
+:host >>> .md-select-placeholder,
+:host >>> .md-select-trigger,
+:host >>> .md-select-arrow{
   color: inherit;
 }
 
-:host >>> .md-input-underline {
+:host >>> .md-input-underline{
   border-color: currentColor;
 }

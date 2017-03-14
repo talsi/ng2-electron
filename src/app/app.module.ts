@@ -5,14 +5,14 @@ import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { AppRoutingModule } from "./app-routing.module";
 import { MaterialModule } from "@angular/material";
-import { AceEditorComponent } from 'ng2-ace-editor';
 import { JsonSchemaFormModule } from 'angular2-json-schema-form/src';
 
 import { AppComponent } from "./app.component";
 
 import {
   NodeApiService,
-  WizardService
+  WizardService,
+  JsonService
 } from "./services";
 
 import {
@@ -33,7 +33,6 @@ import { StepsPipe } from './pipes/steps.pipe';
     SystemInfoItemComponent,
     PageNotFoundComponent,
     WizardStepsComponent,
-    AceEditorComponent,
     StepsPipe
   ],
   imports: [
@@ -45,6 +44,7 @@ import { StepsPipe } from './pipes/steps.pipe';
     AppRoutingModule
   ],
   providers: [
+    {provide: JsonService, useValue: JSON},
     NodeApiService,
     WizardService
   ],

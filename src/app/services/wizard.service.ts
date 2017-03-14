@@ -7,7 +7,7 @@ const systemRequirements: ISystemRequirement[] = [
     name: 'node',
     cmd: 'node -v',
     format: 'plain text',
-    version: '6.5.0',
+    version: '6.9.0',
     range: 'greater than or equal to',
     updateCmd: 'https://nodejs.org/en/'
   },

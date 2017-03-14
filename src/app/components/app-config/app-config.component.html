@@ -1,19 +1,13 @@
-<p>
-  app-config works!
-</p>
-
-<ace-editor
-  #editor
-  (textChanged)="onJsonEditorTextChanged($event)">
-</ace-editor>
-
 <json-schema-form
-  #form
-  [form]="schema"
-  [data]="data"
+  [schema]="schema"
+  [layout]="layout"
   [framework]="'material-design'"
-  (onChanges)="onFormInputChanges($event)"
-  (onSubmit)="onSubmit($event)">
+  (onChanges)="data = $event"
+  (isValid)="wizardService.emitStepValidity($event)"
+  (validationErrors)="error = $event">
 </json-schema-form>
 
-<p>{{error}}</p>
+<pre>
+{{JSON.stringify(data, null, 4)}}
+{{JSON.stringify(error, null, 4)}}
+</pre>

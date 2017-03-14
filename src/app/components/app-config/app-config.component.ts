@@ -1,53 +1,146 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AceEditorComponent } from 'ng2-ace-editor';
+import { Component, OnInit, Inject } from '@angular/core';
 import { JsonSchema } from '../../interfaces';
-import * as ajv from 'ajv';
-import { WizardService } from "../../services/wizard.service";
-import { JsonSchemaFormComponent } from "angular2-json-schema-form";
+import { WizardService, JsonService } from "../../services";
 
-const appConfigJsonSchema : JsonSchema = {
-  required: ['name', 'age'],
+// TODO: remove refs to ajv
+// TODO: delete const a
+const a = {
+  "enabled": true,
+  "name": "certProv",
+  "page": "Settings",
+  "pane": "siteSettings",
+  "title": "Certificate Provisioning",
+  "dir": "/siteSettings/certProv",
+  "defaultRoute": "",
+  "menuPosition": 2,
+  "autoHideLoadingAnimation": false,
+  "mainComponentTag": "<certificate-app></certificate-app>",
+  "requirements": {
+    "apis": [
+      {"name": "admin.getSiteConfig"},
+      {"name": "admin.certificates.cancelCurrentRequest"},
+      {"name": "admin.certificates.getCurrentRequestStatus"},
+      {"name": "admin.certificates.createRequest", "params": ["prefix"]},
+      {"name": "admin.certificates.resendVerificationEmails", "params": ["domains"]}
+    ],
+    "services": [],
+    "isParentSite": true
+  }
+};
+
+const schema = {
+  type: "object",
   properties: {
-    name: {
-      type: 'string',
-      minLength: 1
+    enabled: {
+      type: "boolean",
+      title: "Enabled",
+      default: true
     },
-    age: {
-      type: 'number'
+    name: {
+      type: "string",
+      title: "Name",
+      required: true
+    },
+    page: {
+      type: "string",
+      title: "Page",
+      enum: ["settings", "admin"],
+      default: "settings"
+    },
+    apis: {
+      type: "array",
+      title: "APIs",
+      items: {
+        type: "object",
+        title: "API",
+        properties: {
+          name: {
+            type: "string",
+            title: "name",
+            required: true
+          },
+          params: {
+            type: "array",
+            items: {
+              type: "string",
+              title: "Param"
+            }
+          }
+        }
+      }
     }
   }
 };
 
-const mySchema = {
-  "schema": {
-    "comment": {
-      "type": "string",
-      "title": "Comment"
-    },
-    "name": {
-      "type": "string",
-      "title": "Name"
-    },
-    "age": {
-      "type": "number",
-      "title": "Age"
+const friends = {
+  "type": "array",
+    "items": {
+    "type": "object",
+      "title": "Friend",
+      "properties": {
+      "nick": {
+        "type": "string",
+          "title": "Nickname",
+          "required": true
+      },
+      "gender": {
+        "type": "string",
+          "title": "Gender",
+          "enum": [ "male", "female", "alien" ]
+      },
+      "age": {
+        "type": "integer",
+          "title": "Age"
+      }
     }
-  },
-  "form": [ {
-    "key": "comment",
-    "type": "textarea"
-  }, {
-    "type": "fieldset",
-    "title": "Author",
-    "expandable": true,
-    "items": [
-      "name",
-      "age"
-    ]
-  } ]
+  }
 };
 
-const jsonValidator = ajv().compile(appConfigJsonSchema);
+const layout = [
+  "enabled",
+  "name",
+  "page",
+  {
+    title: "Requirements",
+    type: "section",
+    items: [
+      {
+        type: "array",
+        title: "APIs",
+        items: {
+          type: "section",
+          items: [
+            "apis[].name",
+            {
+              type: "array",
+              items: [
+                "apis[].params[]"
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+];
+
+const formz = [
+  {
+    "type": "array",
+    "items": {
+      "type": "section",
+      "items": [
+        "friends[].nick",
+        {
+          "type": "array",
+          "items": [
+            "friends[].animals[]"
+          ]
+        }
+      ]
+    }
+  }
+];
 
 @Component({
   selector: 'app-app-config',
@@ -56,64 +149,12 @@ const jsonValidator = ajv().compile(appConfigJsonSchema);
 })
 export class AppConfigComponent implements OnInit {
 
-  @ViewChild('editor') editor: AceEditorComponent;
-  @ViewChild('form') form: JsonSchemaFormComponent;
+  data: any;
+  schema = schema;
+  layout = layout;
 
-  data = {};
-
-  schema: JsonSchema = mySchema;
-  text: string = '';
-  error: string = '';
-
-  constructor(private wizardService: WizardService) { }
+  constructor(public wizardService: WizardService, @Inject(JsonService) public JSON: JSON) { }
 
   ngOnInit() {
-  }
-
-  ngAfterViewInit() {
-    this.editor.getEditor().$blockScrolling = Infinity;
-  }
-
-  onFormInputChanges(data){
-    let text = JSON.stringify(data, null, 4);
-    if(this.text !== text){
-      this.text = text;
-      //this.data = data;
-      console.log(`onChanges: ${text}`);
-      this.editor.getEditor().setValue(text);
-      this.editor.getEditor().clearSelection();
-    }
-  }
-
-  onSubmit(data){
-    console.log(`onSubmit: ${JSON.stringify(data, null, 4)}`);
-  }
-
-  onJsonEditorTextChanged(text){
-    let isValid = this.validate(text);
-    if(isValid){
-      if(this.text !== text){
-        this.text = text;
-        this.data = JSON.parse(text);
-      }
-    }
-  }
-
-  private validate(text){
-    try{
-      if(jsonValidator(JSON.parse(text))){
-        this.error = '';
-        this.wizardService.emitStepValidity(true);
-        return true;
-      }else{
-        this.error = 'invalid schema';
-        this.wizardService.emitStepValidity(false);
-        return false;
-      }
-    }catch (e){
-      this.error = `invalid json. error: ${e}`;
-      this.wizardService.emitStepValidity(false);
-      return false;
-    }
   }
 }
