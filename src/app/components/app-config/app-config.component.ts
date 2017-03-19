@@ -1,32 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { JsonSchema } from '../../interfaces';
 import { WizardService, JsonService } from "../../services";
+import * as lodash from 'lodash';
 
 // TODO: remove refs to ajv
 // TODO: delete const a
-const a = {
-  "enabled": true,
-  "name": "certProv",
-  "page": "Settings",
-  "pane": "siteSettings",
-  "title": "Certificate Provisioning",
-  "dir": "/siteSettings/certProv",
-  "defaultRoute": "",
-  "menuPosition": 2,
-  "autoHideLoadingAnimation": false,
-  "mainComponentTag": "<certificate-app></certificate-app>",
-  "requirements": {
-    "apis": [
-      {"name": "admin.getSiteConfig"},
-      {"name": "admin.certificates.cancelCurrentRequest"},
-      {"name": "admin.certificates.getCurrentRequestStatus"},
-      {"name": "admin.certificates.createRequest", "params": ["prefix"]},
-      {"name": "admin.certificates.resendVerificationEmails", "params": ["domains"]}
-    ],
-    "services": [],
-    "isParentSite": true
-  }
-};
 
 const schema = {
   type: "object",
@@ -152,9 +129,22 @@ export class AppConfigComponent implements OnInit {
   data: any;
   schema = schema;
   layout = layout;
+  defaults = {
+    enabled: true,
+    name: '',
+    page: 'Settings',
+    requirements: {
+      apis: [],
+      services: []
+    }
+  };
 
   constructor(public wizardService: WizardService, @Inject(JsonService) public JSON: JSON) { }
 
   ngOnInit() {
+  }
+
+  onChanges(ev){
+    this.data = lodash.defaultsDeep(ev, this.defaults);
   }
 }

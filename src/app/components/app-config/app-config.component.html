@@ -2,12 +2,15 @@
   [schema]="schema"
   [layout]="layout"
   [framework]="'material-design'"
-  (onChanges)="data = $event"
+  (onChanges)="onChanges($event)"
   (isValid)="wizardService.emitStepValidity($event)"
   (validationErrors)="error = $event">
 </json-schema-form>
 
 <pre>
 {{JSON.stringify(data, null, 4)}}
+</pre>
+
+<pre style="color: dimgrey;">
 {{JSON.stringify(error, null, 4)}}
 </pre>
