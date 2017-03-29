@@ -48,7 +48,7 @@ const systemRequirements: ISystemRequirement[] = [
 @Injectable()
 export class WizardService {
 
-  public stepValid = new Observable<boolean>((o: Observer<boolean>) => {this.observer = o }).share();
+  public stepValid = new Observable<boolean>((o: Observer<boolean>) => {this.observer = o}).share();
 
   private observer: Observer<boolean>;
 
@@ -61,5 +61,10 @@ export class WizardService {
   // TODO: GET json from remote
   getSystemRequirements(): ISystemRequirement[] {
     return systemRequirements;
+  }
+
+  // TODO: GET string from remote
+  getInfraRepositoryURL(): string {
+    return 'http://il1a-gl-dev.gigya.net/Console/Site.git';
   }
 }

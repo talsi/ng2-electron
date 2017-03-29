@@ -4,20 +4,26 @@ import { ICmdOutput } from "../interfaces";
 
 const electron = window['require']('electron');
 const spawn = window['require']("child_process").spawn;
-const userHomeDir = window['process'].env[(window['process'].platform == 'win32') ? 'USERPROFILE' : 'HOME'];
+const path = window['require']("path");
+const fs = window['require']('fs');
 
 @Injectable()
 export class NodeApiService {
 
   constructor(private ngZone: NgZone) { }
 
-  cmd(cmd: string) : Observable<ICmdOutput> {
+  isFolderExists(dir: string): boolean{
+    return fs.existsSync(path.normalize(dir));
+  }
 
+  cmd(cmd: string, cwd: string = window['process'].cwd()): Observable<ICmdOutput> {
+
+    cwd = path.normalize(cwd);
     console.log(`cmd invoked: "${cmd}"`);
-    console.log(`cwd: ${userHomeDir}`);
+    console.log(`cwd: ${cwd}`);
 
-    let shell = spawn(cmd, [], {
-      cwd: userHomeDir,
+    const shell = spawn(cmd, [], {
+      cwd: cwd,
       shell: true
     });
 

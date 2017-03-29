@@ -5,7 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { AppRoutingModule } from "./app-routing.module";
 import { MaterialModule } from "@angular/material";
-import { JsonSchemaFormModule } from 'angular2-json-schema-form/src';
+import { JsonSchemaFormModule } from './angular2-json-schema-form';
 
 import { AppComponent } from "./app.component";
 
@@ -20,7 +20,8 @@ import {
   SystemInfoPanelComponent,
   SystemInfoItemComponent,
   PageNotFoundComponent,
-  AppConfigComponent
+  AppConfigComponent,
+  WorkspaceConfigComponent
 } from "./components";
 
 import { StepsPipe } from './pipes/steps.pipe';
@@ -33,6 +34,7 @@ import { StepsPipe } from './pipes/steps.pipe';
     SystemInfoItemComponent,
     PageNotFoundComponent,
     WizardStepsComponent,
+    WorkspaceConfigComponent,
     StepsPipe
   ],
   imports: [

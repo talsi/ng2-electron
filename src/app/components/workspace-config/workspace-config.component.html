@@ -1,0 +1,7 @@
+
+<input #input (change)="onChange(input?.files?.item(0)?.path)" type="file" webkitdirectory />
+<button (click)="input.click()">Open</button>
+<span>{{path}}</span>
+<pre>{{error}}</pre>
+
+<button *ngIf="error === 'config folder does not exist'" (click)="cloneConfigRepo()">Clone Config Repo</button>

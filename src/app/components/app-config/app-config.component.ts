@@ -24,50 +24,31 @@ const schema = {
       enum: ["settings", "admin"],
       default: "settings"
     },
-    apis: {
-      type: "array",
-      title: "APIs",
-      items: {
-        type: "object",
-        title: "API",
-        properties: {
-          name: {
-            type: "string",
-            title: "name",
-            required: true
-          },
-          params: {
-            type: "array",
-            items: {
-              type: "string",
-              title: "Param"
+    requirements: {
+      type: "object",
+      properties: {
+        apis: {
+          type: "array",
+          title: "APIs",
+          items: {
+            type: "object",
+            title: "API",
+            properties: {
+              name: {
+                type: "string",
+                title: "name",
+                required: true
+              },
+              params: {
+                type: "array",
+                items: {
+                  type: "string",
+                  title: "Param"
+                }
+              }
             }
           }
         }
-      }
-    }
-  }
-};
-
-const friends = {
-  "type": "array",
-    "items": {
-    "type": "object",
-      "title": "Friend",
-      "properties": {
-      "nick": {
-        "type": "string",
-          "title": "Nickname",
-          "required": true
-      },
-      "gender": {
-        "type": "string",
-          "title": "Gender",
-          "enum": [ "male", "female", "alien" ]
-      },
-      "age": {
-        "type": "integer",
-          "title": "Age"
       }
     }
   }
@@ -82,40 +63,22 @@ const layout = [
     type: "section",
     items: [
       {
-        type: "array",
+        type: "tabarray",
         title: "APIs",
         items: {
           type: "section",
           items: [
-            "apis[].name",
+            "requirements.apis[].name",
             {
               type: "array",
               items: [
-                "apis[].params[]"
+                "requirements.apis[].params[]"
               ]
             }
           ]
         }
       }
     ]
-  }
-];
-
-const formz = [
-  {
-    "type": "array",
-    "items": {
-      "type": "section",
-      "items": [
-        "friends[].nick",
-        {
-          "type": "array",
-          "items": [
-            "friends[].animals[]"
-          ]
-        }
-      ]
-    }
   }
 ];
 
@@ -146,5 +109,8 @@ export class AppConfigComponent implements OnInit {
 
   onChanges(ev){
     this.data = lodash.defaultsDeep(ev, this.defaults);
+    this.data.requirements.apis.forEach(requirement => {
+      requirement.params = requirement.params || [];
+    });
   }
 }

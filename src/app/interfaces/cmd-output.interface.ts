@@ -1,4 +1,4 @@
 export interface ICmdOutput {
-  type: 'error' | 'info',
-  data: string
+  type: 'error' | 'info';
+  data: string;
 }

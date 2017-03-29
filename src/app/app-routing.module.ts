@@ -4,13 +4,18 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   SystemInfoPanelComponent,
   PageNotFoundComponent,
-  AppConfigComponent
+  AppConfigComponent,
+  WorkspaceConfigComponent
 } from "./components";
 
 const routes: Routes = [
   {
     path: 'system-requirements',
     component: SystemInfoPanelComponent
+  },
+  {
+    path: 'workspace-config',
+    component: WorkspaceConfigComponent
   },
   {
     path: 'app-config',

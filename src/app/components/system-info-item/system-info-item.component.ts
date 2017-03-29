@@ -3,6 +3,8 @@ import { NodeApiService } from "../../services";
 import { ICmdOutput, IRequirementValidationEvent, ISystemRequirement } from "../../interfaces";
 import * as semver from "semver";
 
+const userHomeDir = window['process'].env[(window['process'].platform === 'win32') ? 'USERPROFILE' : 'HOME'];
+
 @Component({
   selector: 'system-info-item',
   templateUrl: 'system-info-item.component.html',
@@ -28,11 +30,11 @@ export class SystemInfoItemComponent implements OnInit {
 
   private getVersion() {
     this.status = 'verifying version...';
-    this.node.cmd(this.requirement.cmd).subscribe(
+    this.node.cmd(this.requirement.cmd, userHomeDir).subscribe(
       output => this.extractVersionFromCmdOutput(output.data),
       err => this.error = err,
       () => this.omCmdComplete()
-    )
+    );
   }
 
   private extractVersionFromCmdOutput(cmdOutput: string) {

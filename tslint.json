@@ -46,12 +46,10 @@
     "no-empty": false,
     "no-empty-interface": true,
     "no-eval": true,
-    "no-inferrable-types": true,
     "no-shadowed-variable": true,
     "no-string-literal": false,
     "no-string-throw": true,
     "no-switch-case-fall-through": true,
-    "no-trailing-whitespace": true,
     "no-unused-expression": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
@@ -60,13 +58,11 @@
       true,
       "check-open-brace",
       "check-catch",
-      "check-else",
-      "check-whitespace"
+      "check-else"
     ],
     "prefer-const": true,
     "quotemark": [
-      true,
-      "single"
+      true
     ],
     "radix": true,
     "semicolon": [
@@ -90,16 +86,11 @@
     "unified-signatures": true,
     "variable-name": false,
     "whitespace": [
-      true,
       "check-branch",
       "check-decl",
       "check-operator",
-      "check-separator",
       "check-type"
     ],
-
-    "directive-selector": [true, "attribute", "app", "camelCase"],
-    "component-selector": [true, "element", "app", "kebab-case"],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
@@ -110,7 +101,6 @@
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "no-access-missing-member": true,
-    "templates-use-public": true,
     "invoke-injectable": true
   }
 }
