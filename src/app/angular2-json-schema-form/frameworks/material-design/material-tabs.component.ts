@@ -13,8 +13,7 @@ import { JsonPointer } from '../../library/utilities/index';
           [active]="selectedItem === i"
           (click)="select(i)">
           <span *ngIf="showAddTab || item.type !== '$ref'" [innerHTML]="setTitle(item, i)"></span>
-          <md-icon *ngIf="!last" class="remove" (click)="removeItem(i)">close</md-icon>
-          <span>{{last}}</span>
+          <md-icon *ngIf="!last" class="remove" (click)="removeItem(i)">close</md-icon>         
         </a>
     </nav>
 

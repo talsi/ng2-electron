@@ -29,7 +29,6 @@ const schema = {
       properties: {
         apis: {
           type: "array",
-          title: "APIs",
           items: {
             type: "object",
             title: "API",
@@ -64,7 +63,7 @@ const layout = [
     items: [
       {
         type: "tabarray",
-        title: "APIs",
+        title: "API",
         items: {
           type: "section",
           items: [
