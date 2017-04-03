@@ -33,6 +33,7 @@ export class WorkspaceConfigComponent implements OnInit {
   private verifyRepository(url: string){
     if(this.wizardService.getInfraRepositoryURL().toLowerCase().trim() === url.toLowerCase().trim()){
       this.error = 'OK';
+      this.wizardService.saveWorkspaceDir(this.path);
       this.wizardService.emitStepValidity(true);
     }else{
       this.error = 'Wrong repo';

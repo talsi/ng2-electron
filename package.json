@@ -9,7 +9,7 @@
     "build": "ng build --watch=false",
     "build-watch": "ng build --watch=true",
     "serve": "ng serve",
-    "serve hmr": "ng serve --hmr -e=hmr",
+    "serve hmr": "ng serve --hmr -e=hmr --port=4300",
     "electron": "electron .",
     "lint": "tslint \"src/**/*.ts\" --project src/tsconfig.json --type-check && tslint \"e2e/**/*.ts\" --project e2e/tsconfig.json --type-check",
     "test": "ng test",

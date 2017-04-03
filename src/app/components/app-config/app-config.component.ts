@@ -15,7 +15,14 @@ const schema = {
     },
     name: {
       type: "string",
-      title: "Name",
+      title: "App Name",
+      description: "will be suffixed with \"-app\"",
+      required: true
+    },
+    title: {
+      type: "string",
+      title: "Title",
+      description: "will be displayed on the menu item",
       required: true
     },
     page: {
@@ -23,6 +30,29 @@ const schema = {
       title: "Page",
       enum: ["settings", "admin"],
       default: "settings"
+    },
+    pane: {
+      type: "string",
+      title: "Menu Pane",
+      enum: [ "siteSettings", "nexus" ],
+      required: true
+    },
+    menuPosition: {
+      type: "integer",
+      minimum: 1,
+      title: "Menu Position",
+      description: "defaults to bottom of menu pane (last)"
+    },
+    defaultRoute: {
+      type: "string",
+      title: "Default Route",
+      description: "If your app uses routing - this will be the initial route",
+    },
+    autoHideLoadingAnimation: {
+      type: "boolean",
+      title: "Enabled",
+      default: true,
+      description: "automatically hides the loading animation once the app loads",
     },
     requirements: {
       type: "object",
@@ -53,10 +83,20 @@ const schema = {
   }
 };
 
-const layout = [
+const form = [
   "enabled",
   "name",
+  "title",
   "page",
+  {
+    key: "pane",
+    options: {
+      "siteSettings": "Site Settings",
+      "nexus": "IDX"
+    }
+  },
+  "menuPosition",
+  "defaultRoute",
   {
     title: "Requirements",
     type: "section",
@@ -88,13 +128,21 @@ const layout = [
 })
 export class AppConfigComponent implements OnInit {
 
+  jsonSchemaForm = {
+    schema: schema,
+    form: form
+  };
+
   data: any;
-  schema = schema;
-  layout = layout;
   defaults = {
     enabled: true,
+    dir: '',
     name: '',
-    page: 'Settings',
+    page: '',
+    pane: '',
+    defaultRoute: "",
+    mainComponentTag: "",
+    autoHideLoadingAnimation: false,
     requirements: {
       apis: [],
       services: []
@@ -107,9 +155,21 @@ export class AppConfigComponent implements OnInit {
   }
 
   onChanges(ev){
+
     this.data = lodash.defaultsDeep(ev, this.defaults);
+
     this.data.requirements.apis.forEach(requirement => {
       requirement.params = requirement.params || [];
     });
+
+    if(this.data.name){
+      if(!this.data.name.endsWith('-app')){
+        this.data.name = `${this.data.name}-app`;
+      }
+      this.data.dir = `${this.data.name}/dist`;
+      this.data.mainComponentTag = `<${this.data.name}></${this.data.name}>`;
+    }
+
+    this.wizardService.saveAppConfig(this.data);
   }
 }

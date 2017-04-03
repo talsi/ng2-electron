@@ -1,6 +1,5 @@
 <json-schema-form
-  [schema]="schema"
-  [layout]="layout"
+  [form]="jsonSchemaForm"
   [framework]="'material-design'"
   (onChanges)="onChanges($event)"
   (isValid)="wizardService.emitStepValidity($event)"

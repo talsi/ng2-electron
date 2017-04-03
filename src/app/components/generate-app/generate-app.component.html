@@ -1,0 +1,10 @@
+<p>
+  generate-app works!
+</p>
+
+<button (click)="createApp()">Generate App</button>
+
+<pre>
+{{wizardService.getWorkspaceDir()}}
+{{JSON.stringify(wizardService.getAppConfig(), null, 4)}}
+</pre>

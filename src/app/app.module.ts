@@ -21,7 +21,8 @@ import {
   SystemInfoItemComponent,
   PageNotFoundComponent,
   AppConfigComponent,
-  WorkspaceConfigComponent
+  WorkspaceConfigComponent,
+  GenerateAppComponent
 } from "./components";
 
 import { StepsPipe } from './pipes/steps.pipe';
@@ -35,7 +36,8 @@ import { StepsPipe } from './pipes/steps.pipe';
     PageNotFoundComponent,
     WizardStepsComponent,
     WorkspaceConfigComponent,
-    StepsPipe
+    StepsPipe,
+    GenerateAppComponent
   ],
   imports: [
     BrowserModule,

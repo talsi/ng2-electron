@@ -12,15 +12,10 @@ export class NodeApiService {
 
   constructor(private ngZone: NgZone) { }
 
-  isFolderExists(dir: string): boolean{
-    return fs.existsSync(path.normalize(dir));
-  }
-
   cmd(cmd: string, cwd: string = window['process'].cwd()): Observable<ICmdOutput> {
 
     cwd = path.normalize(cwd);
-    console.log(`cmd invoked: "${cmd}"`);
-    console.log(`cwd: ${cwd}`);
+    console.log(`invoking cmd "${cmd}" from "${cwd}"`);
 
     const shell = spawn(cmd, [], {
       cwd: cwd,
@@ -72,7 +67,31 @@ export class NodeApiService {
     }).share();
   }
 
+  isFolderExists(dir: string): boolean{
+    return fs.existsSync(path.normalize(dir));
+  }
+
   openExternalBrowser(url: string) {
     electron.shell.openExternal(url);
+  }
+
+  readFile(filepath: string): string {
+    return fs.readFileSync(filepath, 'utf-8');
+  }
+
+  readJSONFile(filepath: string): string {
+    return JSON.parse(this.readFile(filepath));
+  }
+
+  saveFile(filepath: string, content: string) {
+    fs.writeFileSync(filepath, content);
+  }
+
+  saveJsonFile(filepath: string, content: any) {
+    this.saveFile(filepath, JSON.stringify(content, null, 4));
+  }
+
+  appendToFile(filepath: string, content: string) {
+    fs.appendFileSync(filepath, content);
   }
 }

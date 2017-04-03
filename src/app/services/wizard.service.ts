@@ -51,6 +51,8 @@ export class WizardService {
   public stepValid = new Observable<boolean>((o: Observer<boolean>) => {this.observer = o}).share();
 
   private observer: Observer<boolean>;
+  private appConfig: any;
+  private workspaceDir: string;
 
   constructor() { }
 
@@ -66,5 +68,21 @@ export class WizardService {
   // TODO: GET string from remote
   getInfraRepositoryURL(): string {
     return 'http://il1a-gl-dev.gigya.net/Console/Site.git';
+  }
+
+  saveAppConfig(data: any) {
+    this.appConfig = data;
+  }
+
+  getAppConfig(): any {
+    return this.appConfig;
+  }
+
+  saveWorkspaceDir(workspaceDir: string) {
+    this.workspaceDir = workspaceDir;
+  }
+
+  getWorkspaceDir(): string {
+    return this.workspaceDir;
   }
 }

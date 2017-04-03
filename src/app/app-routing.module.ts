@@ -5,7 +5,8 @@ import {
   SystemInfoPanelComponent,
   PageNotFoundComponent,
   AppConfigComponent,
-  WorkspaceConfigComponent
+  WorkspaceConfigComponent,
+  GenerateAppComponent
 } from "./components";
 
 const routes: Routes = [
@@ -22,8 +23,8 @@ const routes: Routes = [
     component: AppConfigComponent
   },
   {
-    path: 'dummy2',
-    component: SystemInfoPanelComponent
+    path: 'generate-app',
+    component: GenerateAppComponent
   },
   {
     path: '',
