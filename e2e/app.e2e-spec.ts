@@ -1,6 +1,6 @@
 import { AppsGeneratorPage } from './app.po';
 
-describe('apps-generator App', function() {
+describe('apps-generator App', () => {
   let page: AppsGeneratorPage;
 
   beforeEach(() => {

@@ -88,7 +88,7 @@ export class NodeApiService {
   }
 
   saveJsonFile(filepath: string, content: any) {
-    this.saveFile(filepath, JSON.stringify(content, null, 4));
+    this.saveFile(filepath, JSON.stringify(content, null, 2));
   }
 
   appendToFile(filepath: string, content: string) {

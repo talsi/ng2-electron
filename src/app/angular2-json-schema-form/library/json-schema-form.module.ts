@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders, ANALYZE_FOR_ENTRY_COMPONENTS } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '@angular/material';
 
 import { JsonSchemaFormComponent } from './json-schema-form.component';
@@ -30,7 +31,7 @@ const ALL_COMPONENTS = [
 
 @NgModule({
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, MaterialModule,
+    CommonModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MaterialModule,
   ],
   declarations: [
     JsonSchemaFormComponent, OrderableDirective, ...ALL_COMPONENTS,

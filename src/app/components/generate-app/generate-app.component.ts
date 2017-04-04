@@ -1,5 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { JsonService, WizardService, NodeApiService } from '../../services';
+import * as lodash from 'lodash';
+import * as keyarrange from 'lodash-keyarrange';
+
+const _: any = lodash.mixin(keyarrange);
 
 @Component({
   selector: 'app-generate-app',
@@ -120,6 +124,7 @@ export class GenerateAppComponent implements OnInit {
       () => {
         console.log(`[complete]: ng new ${newApp.name} --skip-install`);
         this.modifyGeneratedFiles();
+        this.gitCommit();
         this.npmInstall();
       }
     );
@@ -132,45 +137,64 @@ export class GenerateAppComponent implements OnInit {
     this.appDir = `${workspaceDir}\\${newApp.name}`;
 
     // .angular-cli.json
+    console.log('modifying ".angular-cli.json"');
     this.addEnvHMR();
 
     // .gitignore
+    console.log('modifying ".gitignore"');
     this.modifyGitIgnore();
 
     // package.json
+    console.log('modifying "package.json"');
     this.modifyPackageJson();
 
     // proxy.conf.json
+    console.log('creating "proxy.conf.json"');
     this.createProxyConfig();
 
     // bootstrap.ts
+    console.log('creating "bootstrap.ts"');
     this.createBootstrapFile();
 
     // hmr.ts
+    console.log('creating "hmr.ts"');
     this.createHmrFile();
 
     // main.ts
+    console.log('modifying "main.ts"');
     this.overwriteMainFile();
 
     // polyfills.ts
+    console.log('modifying "polyfills.ts"');
     this.overwritePolyfillsFile();
 
     // test.ts
+    console.log('modifying "test.ts"');
     this.overwriteTestFile();
 
     // typings.d.ts
+    console.log('modifying "typings.d.ts"');
     this.overwriteTypingsFile();
 
     // environment.hmr.ts
     // environment.prod.ts
     // environment.ts
+    console.log('modifying "environment.hmr.ts"');
+    console.log('modifying "environment.prod.ts"');
+    console.log('modifying "environment.ts"');
     this.overwriteEnvFiles();
 
     // app.component.ts
+    console.log('modifying "app.component.ts"');
     this.overwriteAppComponentFile();
 
     // web.config
+    console.log('creating "web.config"');
     this.createWebConfigFile();
+
+    // karma.conf.js
+    console.log('modifying "karma.conf.js"');
+    this.modifyKarmaConfigFile();
   }
 
   private addEnvHMR() {
@@ -181,7 +205,9 @@ export class GenerateAppComponent implements OnInit {
   }
 
   private modifyGitIgnore() {
-    this.node.appendToFile(`${this.appDir}\\.gitignore`, '\n/web.config');
+    this.node.appendToFile(`${this.appDir}\\.gitignore`,
+`/web.config
+/.chrome`);
   }
 
   private modifyPackageJson() {
@@ -190,6 +216,7 @@ export class GenerateAppComponent implements OnInit {
     packageJson.scripts.hmr = "ng serve --hmr -e=hmr --ssl --proxy-config=proxy.conf.json";
     packageJson.scripts.release = "ng build --prod --aot --extract-css=false --output-hashing=none";
     packageJson.devDependencies["@angularclass/hmr"] = "1.2.2";
+    packageJson.devDependencies = _.keyArrange(packageJson.devDependencies);
     this.node.saveJsonFile(filepath, packageJson);
   }
 
@@ -420,7 +447,7 @@ getTestBed().initTestEnvironment(
   platformBrowserDynamicTesting()
 );
 // Then we find all the tests.
-const context = require.context('./', true, /\.spec\.ts$/);
+const context = require.context('./', true, /\\.spec\\.ts$/);
 // And load the modules.
 context.keys().map(context);
 // Finally, start Karma to run the tests.
@@ -503,7 +530,79 @@ export class AppComponent {
 </configuration>`);
   }
 
+  private modifyKarmaConfigFile() {
+    this.node.saveFile(`${this.appDir}\\karma.conf.js`,
+`// Karma configuration file, see link for more information
+// https://karma-runner.github.io/0.13/config/configuration-file.html
+
+var path = require('path');
+
+module.exports = function (config) {
+  config.set({
+    basePath: '',
+    frameworks: ['jasmine', '@angular/cli'],
+    plugins: [
+      require('karma-jasmine'),
+      require('karma-chrome-launcher'),
+      require('karma-jasmine-html-reporter'),
+      require('karma-coverage-istanbul-reporter'),
+      require('@angular/cli/plugins/karma')
+    ],
+    client:{
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
+    },
+    files: [
+      { pattern: './src/test.ts', watched: false }
+    ],
+    preprocessors: {
+      './src/test.ts': ['@angular/cli']
+    },
+    mime: {
+      'text/x-typescript': ['ts','tsx']
+    },
+    coverageIstanbulReporter: {
+      reports: [ 'html', 'lcovonly' ],
+      fixWebpackSourcePaths: true
+    },
+    angularCli: {
+      environment: 'dev'
+    },
+    reporters: config.angularCli && config.angularCli.codeCoverage
+              ? ['progress', 'coverage-istanbul']
+              : ['progress', 'kjhtml'],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
+    // Chrome will open dev tools on launch and will save its settings
+    customLaunchers: {
+      ChromeCustom: {
+        base: 'Chrome',
+        flags: [
+          '--auto-open-devtools-for-tabs'
+        ],
+        chromeDataDir : path.resolve(__dirname, '.chrome')
+      }
+    },
+    browsers: ['ChromeCustom'],
+    singleRun: false
+  });
+};`);
+  }
+
   private npmInstall() {
-    this.node.cmd('npm i', this.appDir);
+    this.node.cmd('npm i', this.appDir).subscribe(
+      data => console.log(data),
+      err => console.log(err),
+      () => console.log('npm i completed')
+    );
+  }
+
+  private gitCommit() {
+    this.node.cmd(`git add -A && git commit -m "initial commit" --author="Gigya CLI"`, this.appDir).subscribe(
+      data => console.log(data),
+      err => console.log(err),
+      () => console.log(`git add -A && git commit -m "initial commit" --author="Gigya CLI" completed`)
+    );
   }
 }
