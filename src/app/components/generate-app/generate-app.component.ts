@@ -222,12 +222,14 @@ export class GenerateAppComponent implements OnInit {
 
   private createProxyConfig() {
     const webPackProxyConfig = {
-      "/": {
-        "pathRewrite": {"^/dist" : ""},
+      "/dist": {
+        "secure": false,
         "target": "https://localhost:4200/",
-        "secure": false
+        "pathRewrite": {
+          "^/dist": ""
+        }
       }
-    };
+    }
     this.node.saveJsonFile(`${this.appDir}\\proxy.conf.json`, webPackProxyConfig);
   }
 
