@@ -14,13 +14,9 @@ export class AppComponent implements OnInit {
 }
 
 // using route?
-// TODO: select dir
-// TODO: create app + modify files
-// TODO: add dropdowns to apis / services / panes / pages
-// TODO: set dir in app config automatically - {pane}/{name}
-// TODO: set app component tag by {mainComponentTag}
+// TODO: "README" screen at end
 // TODO: set npm registry
-// TODO: make validator dynamic using eval
+// TODO: make dynamic validator using eval
 // TODO: load app from remote
 // TODO: load schemas from remote
 // TODO: remote logger

@@ -21,78 +21,78 @@ export class GenerateAppComponent implements OnInit {
   ngOnInit() {
 
     // TODO: delete inital data
-    this.wizardService.saveAppConfig({
-      "enabled": true,
-      "name": "etl-app",
-      "title": "ETL Data Flows",
-      "page": "settings",
-      "pane": "nexus",
-      "menuPosition": 1,
-      "defaultRoute": "dataFlow",
-      "dir": "etl-app/dist",
-      "mainComponentTag": "<etl-app></etl-app>",
-      "autoHideLoadingAnimation": false,
-      "requirements": {
-        "apis": [
-          {
-            "name": "idx.search",
-            "params": [
-              "query"
-            ]
-          },
-          {
-            "name": "idx.createScheduling",
-            "params": [
-              "data"
-            ]
-          },
-          {
-            "name": "idx.getScheduling",
-            "params": [
-              "id"
-            ]
-          },
-          {
-            "name": "idx.setScheduling",
-            "params": [
-              "data"
-            ]
-          },
-          {
-            "name": "idx.deleteScheduling",
-            "params": [
-              "id"
-            ]
-          },
-          {
-            "name": "idx.createDataflow",
-            "params": [
-              "data"
-            ]
-          },
-          {
-            "name": "idx.getDataflow",
-            "params": [
-              "id"
-            ]
-          },
-          {
-            "name": "idx.setDataflow",
-            "params": [
-              "data"
-            ]
-          },
-          {
-            "name": "idx.deleteDataflow",
-            "params": [
-              "id"
-            ]
-          }
-        ],
-        "services": []
-      }
-    });
-    this.wizardService.saveWorkspaceDir('D:\\dvlp\\apps-refactor');
+    // this.wizardService.saveAppConfig({
+    //   "enabled": true,
+    //   "name": "etl-app",
+    //   "title": "ETL Data Flows",
+    //   "page": "settings",
+    //   "pane": "nexus",
+    //   "menuPosition": 1,
+    //   "defaultRoute": "dataFlow",
+    //   "dir": "etl-app/dist",
+    //   "mainComponentTag": "<etl-app></etl-app>",
+    //   "autoHideLoadingAnimation": false,
+    //   "requirements": {
+    //     "apis": [
+    //       {
+    //         "name": "idx.search",
+    //         "params": [
+    //           "query"
+    //         ]
+    //       },
+    //       {
+    //         "name": "idx.createScheduling",
+    //         "params": [
+    //           "data"
+    //         ]
+    //       },
+    //       {
+    //         "name": "idx.getScheduling",
+    //         "params": [
+    //           "id"
+    //         ]
+    //       },
+    //       {
+    //         "name": "idx.setScheduling",
+    //         "params": [
+    //           "data"
+    //         ]
+    //       },
+    //       {
+    //         "name": "idx.deleteScheduling",
+    //         "params": [
+    //           "id"
+    //         ]
+    //       },
+    //       {
+    //         "name": "idx.createDataflow",
+    //         "params": [
+    //           "data"
+    //         ]
+    //       },
+    //       {
+    //         "name": "idx.getDataflow",
+    //         "params": [
+    //           "id"
+    //         ]
+    //       },
+    //       {
+    //         "name": "idx.setDataflow",
+    //         "params": [
+    //           "data"
+    //         ]
+    //       },
+    //       {
+    //         "name": "idx.deleteDataflow",
+    //         "params": [
+    //           "id"
+    //         ]
+    //       }
+    //     ],
+    //     "services": []
+    //   }
+    // });
+    // this.wizardService.saveWorkspaceDir('D:\\dvlp\\apps-refactor');
   }
 
   createApp(){
@@ -601,7 +601,7 @@ module.exports = function (config) {
   }
 
   private gitCommit() {
-    this.node.cmd(`git add -A && git commit -m "initial commit" --author="Gigya CLI"`, this.appDir).subscribe(
+    this.node.cmd(`git add -A && git commit -m "initial commit from gigya-cli" --author="Gigya CLI <gigya-cli@console.apps>"`, this.appDir).subscribe(
       data => console.log(data),
       err => console.log(err),
       () => console.log(`git add -A && git commit -m "initial commit" --author="Gigya CLI" completed`)

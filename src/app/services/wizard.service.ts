@@ -66,8 +66,11 @@ export class WizardService {
   }
 
   // TODO: GET string from remote
-  getInfraRepositoryURL(): string {
-    return 'http://il1a-gl-dev.gigya.net/Console/Site.git';
+  getInfraRepositoryURL(): string[] {
+    return [
+      'http://il1a-gl-dev.gigya.net/Console/config.git',
+      'git@il1a-gl-dev.gigya.net:Console/config.git'
+    ];
   }
 
   saveAppConfig(data: any) {

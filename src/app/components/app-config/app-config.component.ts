@@ -2,9 +2,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { WizardService, JsonService } from "../../services";
 import * as lodash from 'lodash';
 
-// TODO: remove refs to ajv
-// TODO: delete const a
-
 const schema = {
   type: "object",
   properties: {
@@ -50,9 +47,8 @@ const schema = {
     },
     autoHideLoadingAnimation: {
       type: "boolean",
-      title: "Enabled",
-      default: true,
-      description: "automatically hides the loading animation once the app loads",
+      title: "Auto Hide Loading Animation (hides loading animation on \"app load\")",
+      default: true
     },
     requirements: {
       type: "object",
@@ -97,6 +93,7 @@ const form = [
   },
   "menuPosition",
   "defaultRoute",
+  "autoHideLoadingAnimation",
   {
     title: "Requirements",
     type: "section",
@@ -157,10 +154,6 @@ export class AppConfigComponent implements OnInit {
   onChanges(ev){
 
     this.data = lodash.defaultsDeep(ev, this.defaults);
-
-    this.data.requirements.apis.forEach(requirement => {
-      requirement.params = requirement.params || [];
-    });
 
     if(this.data.name){
       if(!this.data.name.endsWith('-app')){
