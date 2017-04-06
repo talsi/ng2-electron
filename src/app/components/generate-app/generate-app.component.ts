@@ -269,8 +269,8 @@ const bootstrapWrapper = (module) => {
 };
 
 const registerModule = (module) => {
-  /** If you have external scripts (defined in project’s “angular-cli.json”) uncomment "script.bundle.js" below **/
-  window.System.registerDynamic([/*script.bundle.js*/], true, function(require, exports, system_module) {
+  /** If you have external scripts (defined in project’s “angular-cli.json”) uncomment "scripts.bundle.js" below **/
+  window.System.registerDynamic([/*"scripts.bundle.js"*/], true, function(require, exports, system_module) {
     window.appsManager.registeredAppModules[system_module.id] = true;
     system_module.exports = {
       id: system_module.id,
