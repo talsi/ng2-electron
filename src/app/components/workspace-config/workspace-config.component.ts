@@ -64,13 +64,13 @@ export class WorkspaceConfigComponent implements OnInit {
 
   // TODO: check if folder already exists => display confirm dialog
   cloneConfigRepo(){
-    this.node.cmd(`git clone ${this.wizardService.getInfraRepositoryURL()} config`, this.path).subscribe(
+    this.node.cmd(`git clone -b develop ${this.wizardService.getInfraRepositoryURL()[0]}`, this.path).subscribe(
       output => {
         console.log(output);
         this.error = 'OK';
       },
       err => this.error = err,
-      () => console.log(`git clone ${this.wizardService.getInfraRepositoryURL()} config completed`)
+      () => console.log(`git clone -b develop ${this.wizardService.getInfraRepositoryURL()[0]} config completed`)
     );
   }
 
