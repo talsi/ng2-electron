@@ -68,8 +68,8 @@ export class WizardService {
   // TODO: GET string from remote
   getInfraRepositoryURL(): string[] {
     return [
-      'http://il1a-gl-dev.gigya.net/Console/config.git',
-      'git@il1a-gl-dev.gigya.net:Console/config.git'
+      'http://il1a-gl-dev.gigya.net/Console/apps-config.git',
+      'git@il1a-gl-dev.gigya.net:Console/apps-config.git'
     ];
   }
 
