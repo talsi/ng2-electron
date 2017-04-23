@@ -216,6 +216,7 @@ export class GenerateAppComponent implements OnInit {
     packageJson.scripts.hmr = "ng serve --hmr -e=hmr --ssl --proxy-config=proxy.conf.json";
     packageJson.scripts.release = "ng build --prod --aot --extract-css=false --output-hashing=none";
     packageJson.devDependencies["@angularclass/hmr"] = "1.2.2";
+    packageJson.dependencies["zone.js"] = "0.8.5";
     packageJson.devDependencies = _.keyArrange(packageJson.devDependencies);
     this.node.saveJsonFile(filepath, packageJson);
   }
