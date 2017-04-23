@@ -76,6 +76,6 @@ export class WorkspaceConfigComponent implements OnInit {
 
   private setPath(path: any) {
     this.path = path;
-    this.configFolder = `${path}/config`;
+    this.configFolder = `${path}/apps-config`;
   }
 }

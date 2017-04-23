@@ -102,7 +102,7 @@ export class GenerateAppComponent implements OnInit {
 
   private saveAppConfig() {
     const workspaceDir = this.wizardService.getWorkspaceDir();
-    const filepath = `${workspaceDir}\\config\\apps.json`;
+    const filepath = `${workspaceDir}\\apps-config\\apps.json`;
 
     // read file
     const appsConfig: any = this.node.readJSONFile(filepath);
@@ -527,7 +527,7 @@ export class AppComponent {
 `<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <system.webServer>
-        <httpRedirect enabled="true" destination="https://localhost:4200/" />
+        <httpRedirect enabled="false" destination="https://localhost:4200/" />
     </system.webServer>
 </configuration>`);
   }
