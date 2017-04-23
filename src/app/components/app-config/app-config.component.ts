@@ -13,7 +13,7 @@ const schema = {
     name: {
       type: "string",
       title: "App Name",
-      description: "will be suffixed with \"-app\"",
+      description: "use kebab-case (xxx-xxx) convention. will be suffixed with \"-app\"",
       required: true
     },
     title: {
