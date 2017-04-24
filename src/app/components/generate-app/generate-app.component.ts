@@ -144,9 +144,17 @@ export class GenerateAppComponent implements OnInit {
     console.log('modifying ".gitignore"');
     this.modifyGitIgnore();
 
+    // enable-http-redirect.js
+    console.log('creating "enable-http-redirect.js"');
+    this.createHttpRedirectJs();
+
     // package.json
     console.log('modifying "package.json"');
     this.modifyPackageJson();
+
+    // README.md
+    console.log('modifying  "README.md"');
+    this.overwriteREADME();
 
     // proxy.conf.json
     console.log('creating "proxy.conf.json"');
@@ -210,15 +218,151 @@ export class GenerateAppComponent implements OnInit {
 /.chrome`);
   }
 
+  private createHttpRedirectJs() {
+    this.node.saveFile(`${this.appDir}\\enable-http-redirect.js`, `
+const writeFile = require('write');
+
+const content = \`<?xml version="1.0" encoding="UTF-8"?>
+    <configuration>
+      <system.webServer>
+        <httpRedirect enabled="true" destination="https://localhost:4200/" />
+      </system.webServer>
+      </configuration>\`;
+
+// write file
+writeFile.sync('web.config', content);
+
+console.log('finished setting http redirect for ${this.wizardService.getAppConfig().name}');
+`);
+  }
+
   private modifyPackageJson() {
     const filepath = `${this.appDir}\\package.json`;
     const packageJson: any = this.node.readJSONFile(filepath);
-    packageJson.scripts.hmr = "ng serve --hmr -e=hmr --ssl --proxy-config=proxy.conf.json";
-    packageJson.scripts.release = "ng build --prod --aot --extract-css=false --output-hashing=none";
-    packageJson.devDependencies["@angularclass/hmr"] = "1.2.2";
-    packageJson.dependencies["zone.js"] = "0.8.5";
+
+    delete packageJson.scripts['start'];
+    packageJson.scripts['build-watch'] = 'ng build --watch';
+    packageJson.scripts['serve'] = 'node enable-http-redirect.js && ng serve --ssl --proxy-config=proxy.conf.json';
+    packageJson.scripts['serve-hmr'] = 'node enable-http-redirect.js && ng serve --ssl --proxy-config=proxy.conf.json --hmr -e=hmr';
+    packageJson.scripts['release'] = 'ng build --prod --aot --extract-css=false --output-hashing=none';
+    packageJson.scripts = _.keyArrange(packageJson.scripts);
+
+    packageJson.dependencies['zone.js'] = '0.8.5';
+    packageJson.dependencies = _.keyArrange(packageJson.dependencies);
+
+    packageJson.devDependencies['@angularclass/hmr'] = '1.2.2';
+    packageJson.devDependencies['write'] = '^0.3.3';
     packageJson.devDependencies = _.keyArrange(packageJson.devDependencies);
+
     this.node.saveJsonFile(filepath, packageJson);
+  }
+
+  private overwriteREADME(){
+    this.node.saveFile(`${this.appDir}\\README.md`, `
+# ${_.startCase(this.wizardService.getAppConfig().name)}
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0. and Gigya's [Console-Apps Generator](http://il1a-gl-dev.gigya.net/Console/apps-generator) 
+
+## Prerequisites
+
+###### Setup Your Local IIS
+ 
+Make sure you have enabled [HTTP Redirect](https://www.iis.net/configreference/system.webserver/httpredirect)
+ 
+Add a virtual directory named \`console-apps\` mapped to \`{{apps-workspace-dir}}\`
+
+###### Infra Projects
+
+Make sure you have the following projects cloned into \`{{apps-workspace-dir}}\`. 
+
+[apps-dependencies](http://il1a-gl-dev.gigya.net/Console/apps-dependencies) \`develop\` branch
+
+[apps-manager](http://il1a-gl-dev.gigya.net/Console/apps-manager) \`develop\` branch
+
+[apps-config](http://il1a-gl-dev.gigya.net/Console/apps-config) \`develop\` branch or \`feature\` branch when working on a new app
+
+Make sure you run \`npm install\` and then \`npm release\` in each project
+
+## Build
+
+Run \`ng build\` to build the project.
+
+Run \`ng build --watch\` to build the project and rebuild it on source code changes.
+
+The build artifacts will be stored in the \`/dist\` directory.
+
+Use the \`--prod\` flag for a production build.
+
+## Integrating WebPack's Development Server
+
+Having a "watch" for the build is nice  but having to wait for the build to finish and then manually refresh the browser is tedious. We can do much more. 
+
+To use webpack's integrated dev server choose one of the following options -   
+- Run \`npm run serve\` for a dev server with \`live-reload\`.  
+The app will automatically reload the page if you change the source files.
+
+- Run \`npm run serve-hmr\` for a dev server with \`hot-module-replacement\`.  
+The app will automatically update (without reloading the page) if you change any of the source files.
+
+In both options above a \`web.config\` file will be created setting \`HTTP Redirect\` from \`/{{app-name}}\` to \`https:/localhost:4200\`
+
+## Using a Remote Console
+
+You can even develop console apps without having to build and run the the notorious \`Legacy\` on your local machine.
+
+Install on your remote machine
+
+- [URL Rewrite 2.0](https://www.iis.net/downloads/microsoft/url-rewrite)
+
+- [ARR 3.0](https://www.iis.net/downloads/microsoft/application-request-routing)
+
+- Create a \`web.config\` file inside \`D:\inetpub\wwwroot\console-apps\` with the following content: 
+
+ \`\`\`xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <configuration>
+      <system.webServer>
+        <rewrite>
+          <rules>
+            <rule name="reverse-proxy-console-apps" enabled="true" stopProcessing="true">
+    <match url="(.*)" />
+    <conditions>
+      <add input="{HTTP_X_Reflect_Console_Apps}" pattern="true" />
+    </conditions>
+    <action type="Redirect" url="https://localhost/console-apps/{R:1}" />
+      </rule>
+      </rules>
+      </rewrite>
+      </system.webServer>
+      </configuration>
+      \`\`\`
+
+- Install [Chrome Extension](https://chrome.google.com/webstore/detail/modheader/idgpnmonknjnojddfkpgkljpfnnfcklj?utm_source=chrome-app-launcher-info-dialog) and send \`X-Reflect-Console-Apps: true\` header to enable the feature 
+
+###### Troubleshooting
+
+- \`X-Reflective-Console-Apps\` header is being sent? 
+- Check the value of \`httpRedirect\` in \`web.config\`? 
+- Have you visited \`https://localhost:4200/\` and choose to proceed after getting the "unverified certificate" warning?
+      - Response from \`https://localhost/console-apps/\` has header \`Access-Control-Allow-Origin: *\`
+
+## Code scaffolding
+
+    Run \`ng generate component component-name\` to generate a new component. You can also use \`ng generate directive/pipe/service/class/module\`.
+
+## Running unit tests
+
+    Run \`ng test\` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+  ## Running end-to-end tests
+
+    Run \`ng e2e\` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+    Before running the tests make sure you are serving the app via \`ng serve\`.
+
+## Further help
+
+    To get more help on the Angular CLI use \`ng help\` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+`);
   }
 
   private createProxyConfig() {

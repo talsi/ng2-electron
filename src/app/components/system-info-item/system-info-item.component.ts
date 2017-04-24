@@ -60,7 +60,7 @@ export class SystemInfoItemComponent implements OnInit {
     this.validation.emit({
       name: this.requirement.name,
       isValid: this.isValid
-    })
+    });
   }
 
   private isSemverInRange() {
