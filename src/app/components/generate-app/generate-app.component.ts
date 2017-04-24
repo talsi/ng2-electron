@@ -148,6 +148,10 @@ export class GenerateAppComponent implements OnInit {
     console.log('creating "enable-http-redirect.js"');
     this.createHttpRedirectJs();
 
+    // web.config
+    console.log('creating "web.config for root dir"');
+    this.createHttpResponseHeaderRuleForIIS();
+
     // package.json
     console.log('modifying "package.json"');
     this.modifyPackageJson();
@@ -236,6 +240,21 @@ console.log('finished setting http redirect for ${this.wizardService.getAppConfi
 `);
   }
 
+  private createHttpResponseHeaderRuleForIIS(){
+    this.node.saveFile(`${this.wizardService.getWorkspaceDir()}\\web.config`,
+`<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <system.webServer>
+    <httpProtocol>
+      <customHeaders>
+        <add name="Access-Control-Allow-Origin" value="*" />
+      </customHeaders>
+    </httpProtocol>
+  </system.webServer>
+</configuration>
+`);
+  }
+
   private modifyPackageJson() {
     const filepath = `${this.appDir}\\package.json`;
     const packageJson: any = this.node.readJSONFile(filepath);
@@ -279,7 +298,7 @@ Make sure you have the following projects cloned into \`{{apps-workspace-dir}}\`
 
 [apps-manager](http://il1a-gl-dev.gigya.net/Console/apps-manager) \`develop\` branch
 
-[apps-config](http://il1a-gl-dev.gigya.net/Console/apps-config) \`develop\` branch or \`feature\` branch when working on a new app
+[apps-config](http://il1a-gl-dev.gigya.net/Console/apps-config) \`develop\` branch (create and push a \`"feature"\` branch when working on a new app)
 
 Make sure you run \`npm install\` and then \`npm release\` in each project
 
@@ -318,24 +337,24 @@ Install on your remote machine
 
 - Create a \`web.config\` file inside \`D:\inetpub\wwwroot\console-apps\` with the following content: 
 
- \`\`\`xml
-    <?xml version="1.0" encoding="utf-8"?>
-    <configuration>
-      <system.webServer>
-        <rewrite>
-          <rules>
-            <rule name="reverse-proxy-console-apps" enabled="true" stopProcessing="true">
-    <match url="(.*)" />
-    <conditions>
-      <add input="{HTTP_X_Reflect_Console_Apps}" pattern="true" />
-    </conditions>
-    <action type="Redirect" url="https://localhost/console-apps/{R:1}" />
-      </rule>
+\`\`\`xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <system.webServer>
+    <rewrite>
+      <rules>
+        <rule name="reverse-proxy-console-apps" enabled="true" stopProcessing="true">
+          <match url="(.*)" />
+          <conditions>
+            <add input="{HTTP_X_Reflect_Console_Apps}" pattern="true" />
+          </conditions>
+          <action type="Redirect" url="https://localhost/console-apps/{R:1}" />
+        </rule>
       </rules>
-      </rewrite>
-      </system.webServer>
-      </configuration>
-      \`\`\`
+    </rewrite>
+  </system.webServer>
+</configuration>
+\`\`\`
 
 - Install [Chrome Extension](https://chrome.google.com/webstore/detail/modheader/idgpnmonknjnojddfkpgkljpfnnfcklj?utm_source=chrome-app-launcher-info-dialog) and send \`X-Reflect-Console-Apps: true\` header to enable the feature 
 
@@ -344,24 +363,24 @@ Install on your remote machine
 - \`X-Reflective-Console-Apps\` header is being sent? 
 - Check the value of \`httpRedirect\` in \`web.config\`? 
 - Have you visited \`https://localhost:4200/\` and choose to proceed after getting the "unverified certificate" warning?
-      - Response from \`https://localhost/console-apps/\` has header \`Access-Control-Allow-Origin: *\`
+- Response from \`https://localhost/console-apps/\` has header \`Access-Control-Allow-Origin: *\`
 
 ## Code scaffolding
 
-    Run \`ng generate component component-name\` to generate a new component. You can also use \`ng generate directive/pipe/service/class/module\`.
+Run \`ng generate component component-name\` to generate a new component. You can also use \`ng generate directive/pipe/service/class/module\`.
 
 ## Running unit tests
 
-    Run \`ng test\` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run \`ng test\` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-  ## Running end-to-end tests
+## Running end-to-end tests
 
-    Run \`ng e2e\` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-    Before running the tests make sure you are serving the app via \`ng serve\`.
+Run \`ng e2e\` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Before running the tests make sure you are serving the app via \`ng serve\`.
 
 ## Further help
 
-    To get more help on the Angular CLI use \`ng help\` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+To get more help on the Angular CLI use \`ng help\` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md)
 `);
   }
 

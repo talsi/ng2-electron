@@ -73,6 +73,13 @@ const schema = {
               }
             }
           }
+        },
+        services: {
+          type: "array",
+          items: {
+            type: "string",
+            title: "Service"
+          }
         }
       }
     }
@@ -111,6 +118,16 @@ const form = [
                 "requirements.apis[].params[]"
               ]
             }
+          ]
+        }
+      },
+      {
+        type: "tabarray",
+        title: "Service",
+        items: {
+          type: "section",
+          items: [
+            "requirements.services[]"
           ]
         }
       }
