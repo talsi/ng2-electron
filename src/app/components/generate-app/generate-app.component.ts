@@ -270,7 +270,7 @@ console.log('finished setting http redirect for ${this.wizardService.getAppConfi
     packageJson.scripts['build-watch'] = 'ng build --watch';
     packageJson.scripts['serve'] = 'node enable-http-redirect.js && ng serve --ssl --proxy-config=proxy.conf.json';
     packageJson.scripts['serve-hmr'] = 'node enable-http-redirect.js && ng serve --ssl --proxy-config=proxy.conf.json --hmr -e=hmr';
-    packageJson.scripts['release'] = 'ng build --prod --aot --extract-css=false --output-hashing=none';
+    packageJson.scripts['release'] = 'ng build --prod --aot --extract-css=false --output-hashing=none --sourcemaps=true';
     packageJson.scripts = _.keyArrange(packageJson.scripts);
 
     packageJson.dependencies['zone.js'] = '0.8.5';
