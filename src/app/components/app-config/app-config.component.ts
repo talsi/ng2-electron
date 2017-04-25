@@ -32,7 +32,7 @@ const schema = {
       type: "string",
       title: "Menu Pane",
       enum: [ "siteSettings", "nexus" ],
-      required: true
+      default: "siteSettings"
     },
     menuPosition: {
       type: "integer",
@@ -154,8 +154,8 @@ export class AppConfigComponent implements OnInit {
     name: '',
     page: '',
     pane: '',
-    defaultRoute: "",
-    mainComponentTag: "",
+    defaultRoute: '',
+    mainComponentTag: '',
     autoHideLoadingAnimation: false,
     requirements: {
       apis: [],
@@ -171,6 +171,7 @@ export class AppConfigComponent implements OnInit {
   onChanges(ev){
 
     this.data = lodash.defaultsDeep(ev, this.defaults);
+    this.data.requirements.apis.forEach(api => api.params = api.params || []);
 
     if(this.data.name){
       if(!this.data.name.endsWith('-app')){
