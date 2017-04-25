@@ -102,7 +102,8 @@ export class GenerateAppComponent implements OnInit {
 
   private saveAppConfig() {
     const workspaceDir = this.wizardService.getWorkspaceDir();
-    const filepath = `${workspaceDir}\\apps-config\\apps.json`;
+    const appsConfigDir = `${workspaceDir}\\apps-config`;
+    const filepath = `${appsConfigDir}\\apps.json`;
 
     // read file
     const appsConfig: any = this.node.readJSONFile(filepath);
@@ -113,6 +114,11 @@ export class GenerateAppComponent implements OnInit {
 
     // write file
     this.node.saveJsonFile(filepath, appsConfig);
+    this.node.cmd(`npm run release`, appsConfigDir).subscribe(
+      data => console.log(data),
+      err => console.log(err),
+      () => console.log(`[complete]: npm run release for apps-config`)
+    );
   }
 
   private createAngularApp() {
@@ -226,12 +232,13 @@ export class GenerateAppComponent implements OnInit {
     this.node.saveFile(`${this.appDir}\\enable-http-redirect.js`, `
 const writeFile = require('write');
 
-const content = \`<?xml version="1.0" encoding="UTF-8"?>
-    <configuration>
-      <system.webServer>
-        <httpRedirect enabled="true" destination="https://localhost:4200/" />
-      </system.webServer>
-      </configuration>\`;
+const content = 
+\`<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <system.webServer>
+    <httpRedirect enabled="true" destination="https://localhost:4200/" />
+  </system.webServer>
+</configuration>\`;
 
 // write file
 writeFile.sync('web.config', content);
@@ -690,9 +697,9 @@ export class AppComponent {
     this.node.saveFile(`${this.appDir}\\web.config`,
 `<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <system.webServer>
-        <httpRedirect enabled="false" destination="https://localhost:4200/" />
-    </system.webServer>
+  <system.webServer>
+    <httpRedirect enabled="false" destination="https://localhost:4200/" />
+  </system.webServer>
 </configuration>`);
   }
 
