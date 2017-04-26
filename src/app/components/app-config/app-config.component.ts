@@ -25,13 +25,13 @@ const schema = {
     page: {
       type: "string",
       title: "Page",
-      enum: ["settings", "admin"],
+      enum: ["settings", "Admin"],
       default: "settings"
     },
     pane: {
       type: "string",
       title: "Menu Pane",
-      enum: [ "siteSettings", "nexus", "UserManagement" ],
+      enum: [ "siteSettings", "nexus", "UserManagement", "manageadministrators" ],
       default: "siteSettings"
     },
     menuPosition: {
@@ -101,7 +101,8 @@ const form = [
     options: {
       "siteSettings": "Site Settings",
       "nexus": "IDX",
-      "UserManagement": "Registration-as-a-Service"
+      "UserManagement": "Registration-as-a-Service",
+      "manageadministrators": "Admin"
     }
   },
   "menuPosition",
