@@ -36,3 +36,4 @@ export class AppComponent implements OnInit {
 // TODO: make an "build infra" feature
 // TODO: make an "update all" feature
 // TODO: support for generating routing module
+// TODO: add to troubleshooting how to handle fiddler and socket Connection Upgrade issue (custom rules)
