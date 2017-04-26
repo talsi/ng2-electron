@@ -31,7 +31,7 @@ const schema = {
     pane: {
       type: "string",
       title: "Menu Pane",
-      enum: [ "siteSettings", "nexus" ],
+      enum: [ "siteSettings", "nexus", "UserManagement" ],
       default: "siteSettings"
     },
     menuPosition: {
@@ -53,6 +53,11 @@ const schema = {
     requirements: {
       type: "object",
       properties: {
+        isParentSite: {
+          type: "boolean",
+          title: "Is Parent Site",
+          default: false
+        },
         apis: {
           type: "array",
           items: {
@@ -95,7 +100,8 @@ const form = [
     key: "pane",
     options: {
       "siteSettings": "Site Settings",
-      "nexus": "IDX"
+      "nexus": "IDX",
+      "UserManagement": "Registration-as-a-Service"
     }
   },
   "menuPosition",
@@ -105,6 +111,7 @@ const form = [
     title: "Requirements",
     type: "section",
     items: [
+      "requirements.isParentSite",
       {
         type: "tabarray",
         title: "API",
@@ -158,6 +165,7 @@ export class AppConfigComponent implements OnInit {
     mainComponentTag: '',
     autoHideLoadingAnimation: false,
     requirements: {
+      isParentSite: false,
       apis: [],
       services: []
     }

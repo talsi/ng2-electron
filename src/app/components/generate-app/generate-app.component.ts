@@ -293,8 +293,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ###### Setup Your Local IIS
  
-Make sure you have enabled [HTTP Redirect](https://www.iis.net/configreference/system.webserver/httpredirect)
- 
 Add a virtual directory named \`console-apps\` mapped to \`{{apps-workspace-dir}}\`
 
 ###### Infra Projects
@@ -323,7 +321,10 @@ Use the \`--prod\` flag for a production build.
 
 Having a "watch" for the build is nice  but having to wait for the build to finish and then manually refresh the browser is tedious. We can do much more. 
 
-To use webpack's integrated dev server choose one of the following options -   
+To use webpack's integrated dev server make sure you have enabled [IIS HTTP Redirect](https://www.iis.net/configreference/system.webserver/httpredirect) 
+
+Choose one of the following options -
+
 - Run \`npm run serve\` for a dev server with \`live-reload\`.  
 The app will automatically reload the page if you change the source files.
 
@@ -342,7 +343,7 @@ Install on your remote machine
 
 - [ARR 3.0](https://www.iis.net/downloads/microsoft/application-request-routing)
 
-- Create a \`web.config\` file inside \`D:\inetpub\wwwroot\console-apps\` with the following content: 
+- Create a \`web.config\` file inside \`D:\\\\inetpub\\wwwroot\\console-apps\` with the following content: 
 
 \`\`\`xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -639,6 +640,7 @@ interface NodeModule {
 interface Window {
   System: any;
   site: any;
+  page: any;
   appsManager: any;
 }
 
